@@ -7,6 +7,7 @@ output:
     keep_tex: true
     number_sections: true
     toc_depth: 3
+    latex_engine: xelatex
     includes:
         before_body: title.sty
 header-includes: 
@@ -14,8 +15,9 @@ header-includes:
 ---
 
 ```{r include=FALSE}
+library(scales)
 knitr::opts_chunk$set(echo = TRUE)
-options(width=60)
+options(width=80)
 ```
 
 # Statistiques descriptives unidimensionnelle et bidimensionnelle
@@ -56,7 +58,7 @@ Ici, nous précisons la nature de chaque variable et son format dans R.
 [^1]: On choisi son nature est de quantitative continue parce que.
 [^2]: On pose `FALSE` si la tonalité est mineure et `TRUE` si non.
 
-### Charger le jeu de données dans R
+### Charger les jeux de données dans R
 ```{r}
 LoadDataset <- function(fname) {
     colclasses <- c(
@@ -70,7 +72,22 @@ LoadDataset <- function(fname) {
     return(dataframe)
 }
 daf <- LoadDataset("dataset.csv")
-str(daf)
 ```
 
 ## Analyses unidimensionnelles
+### Une variable qualitative - `pop.class`
+```{r}
+summary(daf$pop.class)
+```
+Il existe 4 niveaux de popularité (modalités). Commencer par `A` est le plus populaire et décroissant avec `B`, `C`, `D`.
+
+```{r}
+pop_class_table <- table(daf$pop.class)
+print(label_percent()(c(pop_class_table) / sum(pop_class_table)), quote = FALSE)
+```
+```{r pop_class_table, fig.cap = "Diagramme circulaire de popularité"}
+pie(pop_class_table, col = rainbow(length(pop_class_table)))
+```
+
+On peut noter que dans cet ensemble de données, la plupart des chansons ne sont pas populaires (`31,5%`).
+Plus le niveau de popularité est élevé, moins les chansons peuvent atteindre ce niveau.

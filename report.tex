@@ -227,9 +227,9 @@ Nom de variable statistique & Type de variable & Format dans R \\
 \bottomrule
 \end{longtable}
 
-\hypertarget{charger-le-jeu-de-donnuxe9es-dans-r}{%
-\subsubsection{Charger le jeu de données dans
-R}\label{charger-le-jeu-de-donnuxe9es-dans-r}}
+\hypertarget{charger-les-jeux-de-donnuxe9es-dans-r}{%
+\subsubsection{Charger les jeux de données dans
+R}\label{charger-les-jeux-de-donnuxe9es-dans-r}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -245,23 +245,58 @@ R}\label{charger-le-jeu-de-donnuxe9es-dans-r}}
     \FunctionTok{return}\NormalTok{(dataframe)}
 \NormalTok{\}}
 \NormalTok{daf }\OtherTok{\textless{}{-}} \FunctionTok{LoadDataset}\NormalTok{(}\StringTok{"dataset.csv"}\NormalTok{)}
-\FunctionTok{str}\NormalTok{(daf)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{analyses-unidimensionnelles}{%
+\subsection{Analyses
+unidimensionnelles}\label{analyses-unidimensionnelles}}
+
+\hypertarget{une-variable-qualitative---pop.class}{%
+\subsubsection{\texorpdfstring{Une variable qualitative -
+\texttt{pop.class}}{Une variable qualitative - pop.class}}\label{une-variable-qualitative---pop.class}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(daf}\SpecialCharTok{$}\NormalTok{pop.class)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-## 'data.frame':    10000 obs. of  11 variables:
-##  $ year        : int  1998 1992 1973 1969 2008 2015 1935 1928 2013 1945 ...
-##  $ acousticness: num  0.147 0.193 0.388 0.733 0.979 0.0742 0.99 0.995 0.000506 0.98 ...
-##  $ duration    : num  148520 189800 289267 170267 438907 ...
-##  $ energy      : num  0.74 0.389 0.856 0.454 0.494 0.766 0.42 0.211 0.53 0.106 ...
-##  $ explicit    : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
-##  $ key         : Factor w/ 12 levels "A","Ab","B","Bb",..: 7 5 1 10 11 11 2 6 12 12 ...
-##  $ liveness    : num  0.0452 0.154 0.139 0.0889 0.123 0.0827 0.13 0.106 0.0477 0.237 ...
-##  $ loudness    : num  -8.16 -11.64 -8.4 -8.12 -10.65 ...
-##  $ mode        : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
-##  $ tempo       : num  157.1 85.3 101.3 82.4 156.3 ...
-##  $ pop.class   : Factor w/ 4 levels "A","B","C","D": 3 3 3 3 3 1 4 4 2 4 ...
+##    A    B    C    D 
+##  940 2874 3038 3148
 \end{verbatim}
+
+Il existe 4 niveaux de popularité (modalités). Commencer par \texttt{A}
+est le plus populaire et décroissant avec \texttt{B}, \texttt{C},
+\texttt{D}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pop\_class\_table }\OtherTok{\textless{}{-}} \FunctionTok{table}\NormalTok{(daf}\SpecialCharTok{$}\NormalTok{pop.class)}
+\FunctionTok{print}\NormalTok{(}\FunctionTok{label\_percent}\NormalTok{()(}\FunctionTok{c}\NormalTok{(pop\_class\_table) }\SpecialCharTok{/} \FunctionTok{sum}\NormalTok{(pop\_class\_table)), }\AttributeTok{quote =} \ConstantTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##     A     B     C     D 
+##  9.4% 28.7% 30.4% 31.5%
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{pie}\NormalTok{(pop\_class\_table, }\AttributeTok{col =} \FunctionTok{rainbow}\NormalTok{(}\FunctionTok{length}\NormalTok{(pop\_class\_table)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+\centering
+\includegraphics{report_files/figure-latex/pop_class_table-1.pdf}
+\caption{Diagramme circulaire de popularité}
+\end{figure}
+
+On peut noter que dans cet ensemble de données, la plupart des chansons
+ne sont pas populaires (\texttt{31,5\%}). Plus le niveau de popularité
+est élevé, moins les chansons peuvent atteindre ce niveau.
 
 \end{document}
