@@ -109,6 +109,13 @@
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \setcounter{secnumdepth}{5}
 \usepackage{setspace}
+\makeatletter
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+        {-2.5ex\@plus -1ex \@minus -.25ex}%
+        {1.25ex \@plus .25ex}%
+        {\normalfont\normalsize\bfseries}}
+\makeatother
+\setcounter{secnumdepth}{4}
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
@@ -283,12 +290,6 @@ est le plus populaire et décroissant avec \texttt{B}, \texttt{C},
 ##  9.4% 28.7% 30.4% 31.5%
 \end{verbatim}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{pie}\NormalTok{(pop\_class\_table, }\AttributeTok{col =} \FunctionTok{rainbow}\NormalTok{(}\FunctionTok{length}\NormalTok{(pop\_class\_table)))}
-\end{Highlighting}
-\end{Shaded}
-
 \begin{figure}
 \centering
 \includegraphics{report_files/figure-latex/pop_class_table-1.pdf}
@@ -296,7 +297,75 @@ est le plus populaire et décroissant avec \texttt{B}, \texttt{C},
 \end{figure}
 
 On peut noter que dans cet ensemble de données, la plupart des chansons
-ne sont pas populaires (\texttt{31,5\%}). Plus le niveau de popularité
-est élevé, moins les chansons peuvent atteindre ce niveau.
+ne sont pas populaires (\(31,5%
+\)). Plus le niveau de popularité est élevé, moins les chansons peuvent
+atteindre ce niveau.
+
+\hypertarget{une-variable-quantitative---acousticness}{%
+\subsubsection{\texorpdfstring{Une variable quantitative -
+\texttt{acousticness}}{Une variable quantitative - acousticness}}\label{une-variable-quantitative---acousticness}}
+
+\hypertarget{ruxe9sumuxe9}{%
+\paragraph{Résumé}\label{ruxe9sumuxe9}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(daf}\SpecialCharTok{$}\NormalTok{acousticness)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##  0.0000  0.0961  0.5085  0.4990  0.8930  0.9960
+\end{verbatim}
+
+D'après le résultat ci-dessus, on a:
+
+\begin{itemize}
+\tightlist
+\item
+  Le premier quartile \(q_{0.25}\) est \(0.0961\)
+\item
+  Le deuxième quartile \(q_{0.5}\) est \(0.5085\)
+\item
+  Le troisième quartile \(q_{0.75}\) est \(0.8930\)
+\end{itemize}
+
+\hypertarget{distribution}{%
+\paragraph{Distribution}\label{distribution}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{skewness}\NormalTok{(daf}\SpecialCharTok{$}\NormalTok{acousticness)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] -0.01816556
+\end{verbatim}
+
+Étant donné que son skewness est approximativement 0, nous pouvons
+conclure que l'ensemble de données est centré autour de sa médiane.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{kurtosis}\NormalTok{(daf}\SpecialCharTok{$}\NormalTok{acousticness)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] -1.613205
+\end{verbatim}
+
+Du fait que son kurtosis est inférieur à \(-1,2\) (le kurtosis de la
+distribution uniforme\footnote{\url{https://en.wikipedia.org/wiki/Kurtosis\#Other_well-known_distributions}}),
+sa distribution aura la forme d'une vallée (car la distribution uniforme
+est déjà une ligne).
+
+\begin{figure}
+\centering
+\includegraphics{report_files/figure-latex/daf_acousticness_boxplot-1.pdf}
+\caption{Histogramme d'acoustique des chansons}
+\end{figure}
 
 \end{document}

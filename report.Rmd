@@ -9,13 +9,13 @@ output:
     toc_depth: 3
     latex_engine: xelatex
     includes:
-        before_body: title.sty
-header-includes: 
-  - \usepackage{setspace}
+      in_header: preamble.tex
+      before_body: title.sty
 ---
 
 ```{r include=FALSE}
 library(scales)
+library(e1071)
 knitr::opts_chunk$set(echo = TRUE)
 options(width=80)
 ```
@@ -85,9 +85,40 @@ Il existe 4 niveaux de popularité (modalités). Commencer par `A` est le plus 
 pop_class_table <- table(daf$pop.class)
 print(label_percent()(c(pop_class_table) / sum(pop_class_table)), quote = FALSE)
 ```
-```{r pop_class_table, fig.cap = "Diagramme circulaire de popularité"}
+```{r pop_class_table, fig.cap = "Diagramme circulaire de popularité", echo = FALSE}
 pie(pop_class_table, col = rainbow(length(pop_class_table)))
 ```
 
-On peut noter que dans cet ensemble de données, la plupart des chansons ne sont pas populaires (`31,5%`).
+On peut noter que dans cet ensemble de données, la plupart des chansons ne sont pas populaires ($31,5%$).
 Plus le niveau de popularité est élevé, moins les chansons peuvent atteindre ce niveau.
+
+### Une variable quantitative - `acousticness`
+#### Résumé
+
+```{r}
+summary(daf$acousticness)
+```
+D'après le résultat ci-dessus, on a:
+
+- Le premier quartile $q_{0.25}$ est $0.0961$
+- Le deuxième quartile $q_{0.5}$ est $0.5085$
+- Le troisième quartile $q_{0.75}$ est $0.8930$
+
+#### Distribution
+```{r}
+skewness(daf$acousticness)
+```
+Étant donné que son skewness est approximativement 0, nous pouvons conclure que 
+l'ensemble de données est centré autour de sa médiane.
+
+```{r}
+kurtosis(daf$acousticness)
+```
+Du fait que son kurtosis est inférieur à $-1,2$ (le kurtosis de la distribution uniforme[^3]),
+sa distribution aura la forme d'une vallée (car la distribution uniforme est déjà une ligne).
+
+```{r daf_acousticness_boxplot, fig.cap = "Histogramme d'acoustique des chansons", echo = FALSE}
+hist(daf$acousticness, main=NULL, ylab="Fréquence", xlab="Acoustique")
+```
+
+[^3]: https://en.wikipedia.org/wiki/Kurtosis#Other_well-known_distributions
