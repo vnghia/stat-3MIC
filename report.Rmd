@@ -16,6 +16,7 @@ output:
 ```{r include=FALSE}
 library(scales)
 library(e1071)
+library(BioStatR)
 knitr::opts_chunk$set(echo = TRUE)
 options(width=80)
 ```
@@ -53,10 +54,12 @@ Ici, nous précisons la nature de chaque variable et son format dans R.
 |`loudness`|quantitative continue|`numeric`|
 |`mode`|qualitative nominale[^2]|`logical`|
 |`tempo`|quantitative continue|`numeric`|
-|`pop.class`|qualitative nominale|`factor`|
+|`pop.class`|qualitative ordinale|`factor`|
 
 [^1]: On choisi son nature est de quantitative continue parce que.
 [^2]: On pose `FALSE` si la tonalité est mineure et `TRUE` si non.
+
+<!-- TODO(vnvo2409): Explain why [^1] --> 
 
 ### Charger les jeux de données dans R
 ```{r}
@@ -83,10 +86,10 @@ Il existe 4 niveaux de popularité (modalités). Commencer par `A` est le plus 
 
 ```{r}
 pop_class_table <- table(daf$pop.class)
-print(label_percent()(c(pop_class_table) / sum(pop_class_table)), quote = FALSE)
+print(label_percent()(c(pop_class_table) / sum(pop_class_table)), quote = F)
 ```
-```{r pop_class_table, fig.cap = "Diagramme circulaire de popularité", echo = FALSE}
-pie(pop_class_table, col = rainbow(length(pop_class_table)))
+```{r pop_class_table, fig.cap = "Diagramme en barre de popularité", echo = FALSE}
+barplot(as.matrix(pop_class_table), horiz = T, col = rainbow(length(pop_class_table),alpha=.5), ylim=c(0, 10), legend.text = levels(daf$pop.class))
 ```
 
 On peut noter que dans cet ensemble de données, la plupart des chansons ne sont pas populaires ($31,5%$).
@@ -104,6 +107,7 @@ D'après le résultat ci-dessus, on a:
 - Le deuxième quartile $q_{0.5}$ est $0.5085$
 - Le troisième quartile $q_{0.75}$ est $0.8930$
 
+<!-- TODO(vnvo2409): Explain this result and say that a song is either acoustic or electronic. --> 
 #### Distribution
 ```{r}
 skewness(daf$acousticness)
@@ -118,7 +122,30 @@ Du fait que son kurtosis est inférieur à $-1,2$ (le kurtosis de la distributio
 sa distribution aura la forme d'une vallée (car la distribution uniforme est déjà une ligne).
 
 ```{r daf_acousticness_boxplot, fig.cap = "Histogramme d'acoustique des chansons", echo = FALSE}
-hist(daf$acousticness, main=NULL, ylab="Fréquence", xlab="Acoustique")
+hist(daf$acousticness, main=NULL, ylab="Fréquence", xlab="Acoustique", col="cadetblue1")
 ```
 
 [^3]: https://en.wikipedia.org/wiki/Kurtosis#Other_well-known_distributions
+
+## Analyses bidimensionnelles
+
+### Entre une variable quantitative et une qualitative
+Dans cette partie, nous réutiliserons et analyserons les 2 variables précédentes (`pop.class` et `acousticness`).
+
+#### Représentation graphique
+```{r daf_acousticness_popclass_boxplot, fig.cap = "Boxplot parallèles de la relation entre acoustique et popularité", echo = FALSE}
+boxplot(daf$acousticness ~ daf$pop.class, main=NULL, ylab="Acoustique", xlab="Popularité", outline = FALSE)
+```
+
+Notez à partir de notre graphique, les cases varient d'un facteur à l'autre, 
+nous concluons que l'acoustique et la popularité sont liées l'une à l'autre.
+
+De plus, $75\%$ des chansons populaires ont une acoustique inférieure à $0,5$ tandis que celle de presque $100\%$ des chansons les moins populaires est supérieure à $0,5$. 
+De l'autre côté, selon la partie précédente, la distribution des chansons avec l'acoustique est symétrique autour de sa médiane (ce qui indique qu'il y a presque le même nombre de chansons de 2 types). 
+Il est démontrable que les gens aiment les chansons électroniques.
+
+#### Indice de liaison
+```{r}
+eta2(daf$acousticness, daf$pop.class)
+```
+Avec $c_{y|x} \approx 0,4$, il existe une légère relation entre deux variables.

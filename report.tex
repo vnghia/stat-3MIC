@@ -230,7 +230,7 @@ Nom de variable statistique & Type de variable & Format dans R \\
   la tonalité est mineure et \texttt{TRUE} si non.} &
 \texttt{logical} \\
 \texttt{tempo} & quantitative continue & \texttt{numeric} \\
-\texttt{pop.class} & qualitative nominale & \texttt{factor} \\
+\texttt{pop.class} & qualitative ordinale & \texttt{factor} \\
 \bottomrule
 \end{longtable}
 
@@ -281,7 +281,7 @@ est le plus populaire et décroissant avec \texttt{B}, \texttt{C},
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{pop\_class\_table }\OtherTok{\textless{}{-}} \FunctionTok{table}\NormalTok{(daf}\SpecialCharTok{$}\NormalTok{pop.class)}
-\FunctionTok{print}\NormalTok{(}\FunctionTok{label\_percent}\NormalTok{()(}\FunctionTok{c}\NormalTok{(pop\_class\_table) }\SpecialCharTok{/} \FunctionTok{sum}\NormalTok{(pop\_class\_table)), }\AttributeTok{quote =} \ConstantTok{FALSE}\NormalTok{)}
+\FunctionTok{print}\NormalTok{(}\FunctionTok{label\_percent}\NormalTok{()(}\FunctionTok{c}\NormalTok{(pop\_class\_table) }\SpecialCharTok{/} \FunctionTok{sum}\NormalTok{(pop\_class\_table)), }\AttributeTok{quote =}\NormalTok{ F)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -293,7 +293,7 @@ est le plus populaire et décroissant avec \texttt{B}, \texttt{C},
 \begin{figure}
 \centering
 \includegraphics{report_files/figure-latex/pop_class_table-1.pdf}
-\caption{Diagramme circulaire de popularité}
+\caption{Diagramme en barre de popularité}
 \end{figure}
 
 On peut noter que dans cet ensemble de données, la plupart des chansons
@@ -367,5 +367,54 @@ est déjà une ligne).
 \includegraphics{report_files/figure-latex/daf_acousticness_boxplot-1.pdf}
 \caption{Histogramme d'acoustique des chansons}
 \end{figure}
+
+\hypertarget{analyses-bidimensionnelles}{%
+\subsection{Analyses
+bidimensionnelles}\label{analyses-bidimensionnelles}}
+
+\hypertarget{entre-une-variable-quantitative-et-une-qualitative}{%
+\subsubsection{Entre une variable quantitative et une
+qualitative}\label{entre-une-variable-quantitative-et-une-qualitative}}
+
+Dans cette partie, nous réutiliserons et analyserons les 2 variables
+précédentes (\texttt{pop.class} et \texttt{acousticness}).
+
+\hypertarget{repruxe9sentation-graphique}{%
+\paragraph{Représentation graphique}\label{repruxe9sentation-graphique}}
+
+\begin{figure}
+\centering
+\includegraphics{report_files/figure-latex/daf_acousticness_popclass_boxplot-1.pdf}
+\caption{Boxplot parallèles de la relation entre acoustique et
+popularité}
+\end{figure}
+
+Notez à partir de notre graphique, les cases varient d'un facteur à
+l'autre, nous concluons que l'acoustique et la popularité sont liées
+l'une à l'autre.
+
+De plus, \(75\%\) des chansons populaires ont une acoustique inférieure
+à \(0,5\) tandis que celle de presque \(100\%\) des chansons les moins
+populaires est supérieure à \(0,5\). De l'autre côté, selon la partie
+précédente, la distribution des chansons avec l'acoustique est
+symétrique autour de sa médiane (ce qui indique qu'il y a presque le
+même nombre de chansons de 2 types). Il est démontrable que les gens
+aiment les chansons électroniques.
+
+\hypertarget{indice-de-liaison}{%
+\paragraph{Indice de liaison}\label{indice-de-liaison}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{eta2}\NormalTok{(daf}\SpecialCharTok{$}\NormalTok{acousticness, daf}\SpecialCharTok{$}\NormalTok{pop.class)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.3673706
+\end{verbatim}
+
+Avec \(c_{y|x} \approx 0,4\), il existe une légère relation entre deux
+variables.
 
 \end{document}
