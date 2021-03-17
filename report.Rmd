@@ -1,0 +1,76 @@
+---
+fontsize: 12pt
+output:
+  pdf_document:
+    fig_caption: true
+    highlight: tango
+    keep_tex: true
+    number_sections: true
+    toc_depth: 3
+    includes:
+        before_body: title.sty
+header-includes: 
+  - \usepackage{setspace}
+---
+
+```{r include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(width=60)
+```
+
+# Statistiques descriptives unidimensionnelle et bidimensionnelle
+## La nature des jeux de données
+### Des jeux de données
+Ces jeux de données se composent de 10000 chansons extraites de la base de données Spotify. 
+Chaque ligne contient 11 variables statistiques comme suit:
+
+- `year`: année de sortie du morceau,
+- `acousticness`: métrique relative interne de l’acoustique morceau,
+- `duration`: durée du morceau en millisecondes (ms),
+- `energy`: métrique relative interne de l’intensité, des rythmes du morceau,
+- `explicit`: vaut 1 si le morceau contient des vulgarités, et 0 sinon,
+- `key`: tonalité en début de morceau,
+- `liveness`: proportion du morceau où l’on entend un public,
+- `loudness`: mesure relative du volume du morceau (en décibels, dB)
+- `mode`: mode du morceau (0 si la tonalité est mineure, et 1 si la tonalité est majeure),
+- `tempo`: le tempo du morceau, en battement par minute (bpm),
+- `pop.class`: la popularité du morceau.
+
+### Des variables statistiques
+Ici, nous précisons la nature de chaque variable et son format dans R.
+
+|Nom de variable statistique| Type de variable| Format dans R |
+|--|--|--:|
+|`year`|qualitative ordinale|`integer`|
+|`acousticness`|quantitative continue|`numeric`|
+|`duration`|quantitative continue[^1]|`numeric`|
+|`energy`|quantitative continue|`numeric`|
+|`explicit`|qualitative nominale|`logical`|
+|`key`|qualitative nominale|`factor`|
+|`liveness`|quantitative continue|`numeric`|
+|`loudness`|quantitative continue|`numeric`|
+|`mode`|qualitative nominale[^2]|`logical`|
+|`tempo`|quantitative continue|`numeric`|
+|`pop.class`|qualitative nominale|`factor`|
+
+[^1]: On choisi son nature est de quantitative continue parce que.
+[^2]: On pose `FALSE` si la tonalité est mineure et `TRUE` si non.
+
+### Charger le jeu de données dans R
+```{r}
+LoadDataset <- function(fname) {
+    colclasses <- c(
+        "integer", "numeric", "numeric",
+        "numeric", "integer", "factor", "numeric",
+        "numeric", "integer", "numeric", "factor"
+    )
+    dataframe <- read.csv(fname, colClasses = colclasses)
+    dataframe$explicit <- as.logical(dataframe$explicit)
+    dataframe$mode <- as.logical(dataframe$mode)
+    return(dataframe)
+}
+daf <- LoadDataset("dataset.csv")
+str(daf)
+```
+
+## Analyses unidimensionnelles

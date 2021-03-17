@@ -1,7 +1,7 @@
 
 LoadDataset <- function(fname) {
     colclasses <- c(
-        "integer", "numeric", "integer",
+        "integer", "numeric", "numeric",
         "numeric", "integer", "factor", "numeric",
         "numeric", "integer", "numeric", "factor"
     )
@@ -10,5 +10,4 @@ LoadDataset <- function(fname) {
     dataframe$mode <- as.logical(dataframe$mode)
     return(dataframe)
 }
-
-dataframe <- LoadDataset("dataset.csv")
+daf <- LoadDataset("dataset.csv")
