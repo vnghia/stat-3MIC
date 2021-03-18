@@ -141,7 +141,6 @@ VO Van Nghia\\
 % \end{titlepage}
 
 \newpage
-\doublespacing
 
 \newpage
 \renewcommand{\contentsname}{Table des matières}
@@ -154,12 +153,9 @@ VO Van Nghia\\
 
 \newpage
 \pagenumbering{arabic}
+\doublespacing
 
 
-{
-\setcounter{tocdepth}{3}
-\tableofcontents
-}
 \hypertarget{statistiques-descriptives-unidimensionnelle-et-bidimensionnelle}{%
 \section{Statistiques descriptives unidimensionnelle et bidimensionnelle}\label{statistiques-descriptives-unidimensionnelle-et-bidimensionnelle}}
 
@@ -285,9 +281,12 @@ print(label_percent()(c(pop_class_table) / sum(pop_class_table)), quote = F)
 \end{lstlisting}
 
 \begin{figure}
-\centering
-\includegraphics{report_files/figure-latex/pop-class-table-1.pdf}
-\caption{\label{fig:pop-class-table}Diagramme en barre de popularité}
+
+{\centering \includegraphics{report_files/figure-latex/pop-class-table-1} 
+
+}
+
+\caption{Diagramme en barre de popularité}\label{fig:pop-class-table}
 \end{figure}
 
 On peut noter que dans cet ensemble de données, la plupart des chansons ne sont pas populaires (\(31,5%
@@ -347,9 +346,12 @@ Du fait que son kurtosis est inférieur à \(-1,2\) (le kurtosis de la distribut
 sa distribution aura la forme d'une vallée (car la distribution uniforme est déjà une ligne).
 
 \begin{figure}
-\centering
-\includegraphics{report_files/figure-latex/daf-acousticness-hist-1.pdf}
-\caption{\label{fig:daf-acousticness-hist}Histogramme d'acoustique des chansons}
+
+{\centering \includegraphics{report_files/figure-latex/daf-acousticness-hist-1} 
+
+}
+
+\caption{Histogramme d'acoustique des chansons}\label{fig:daf-acousticness-hist}
 \end{figure}
 
 Vous pouvez voir toutes les caractéristiques mentionnées ci-dessus dans la figure \ref{fig:daf-acousticness-hist}.
@@ -366,9 +368,12 @@ Dans cette partie, nous réutiliserons et analyserons les 2 variables précéden
 \paragraph{Représentation graphique}\label{repruxe9sentation-graphique}}
 
 \begin{figure}
-\centering
-\includegraphics{report_files/figure-latex/daf-acousticness-popclass-boxplot-1.pdf}
-\caption{\label{fig:daf-acousticness-popclass-boxplot}Boxplot parallèles de la relation entre acoustique et popularité}
+
+{\centering \includegraphics{report_files/figure-latex/daf-acousticness-popclass-boxplot-1} 
+
+}
+
+\caption{Boxplot parallèles de la relation entre acoustique et popularité}\label{fig:daf-acousticness-popclass-boxplot}
 \end{figure}
 
 Notez à partir de notre graphique, les cases varient d'un facteur à l'autre,
@@ -391,8 +396,8 @@ eta2(daf$acousticness, daf$pop.class)
 
 Avec \(c_{y|x} \approx 0,4\), il existe une légère relation entre deux variables.
 
-\hypertarget{entre-deux-variables-quantitatives}{%
-\subsubsection{Entre deux variables quantitatives}\label{entre-deux-variables-quantitatives}}
+\hypertarget{volume-energy}{%
+\subsubsection{Entre deux variables quantitatives}\label{volume-energy}}
 
 Dans cette partie, nous étudions la relation entre le volume et l'énergie.
 
@@ -400,9 +405,12 @@ Dans cette partie, nous étudions la relation entre le volume et l'énergie.
 \paragraph{Représentation graphique}\label{repruxe9sentation-graphique-1}}
 
 \begin{figure}
-\centering
-\includegraphics{report_files/figure-latex/daf-point-energy-loudness-1.pdf}
-\caption{\label{fig:daf-point-energy-loudness}Nuage de points et droite de régression entre l'énergie et le volume}
+
+{\centering \includegraphics{report_files/figure-latex/daf-point-energy-loudness-1} 
+
+}
+
+\caption{Nuage de points et droite de régression entre l'énergie et le volume}\label{fig:daf-point-energy-loudness}
 \end{figure}
 
 \hypertarget{indices-de-liaison}{%
@@ -435,7 +443,12 @@ dafacp <- dafacp[,-1] # remove the first column of `dafacp` (which is `year`)
 \subsection{Choix du type d'ACP réalisé}\label{choix-du-type-dacp-ruxe9alisuxe9}}
 
 \begin{figure}
-\subfloat[Des données brutes\label{fig:boxplot-comparison-1}]{\includegraphics[width=0.5\linewidth]{report_files/figure-latex/boxplot-comparison-1} }\subfloat[Des données centrées réduites\label{fig:boxplot-comparison-2}]{\includegraphics[width=0.5\linewidth]{report_files/figure-latex/boxplot-comparison-2} }\caption{Boxplots des données quantitatives}\label{fig:boxplot-comparison}
+
+{\centering \subfloat[Des données brutes\label{fig:boxplot-comparison-1}]{\includegraphics[width=0.5\linewidth]{report_files/figure-latex/boxplot-comparison-1} }\subfloat[Des données centrées réduites\label{fig:boxplot-comparison-2}]{\includegraphics[width=0.5\linewidth]{report_files/figure-latex/boxplot-comparison-2} }
+
+}
+
+\caption{Boxplots des données quantitatives}\label{fig:boxplot-comparison}
 \end{figure}
 
 Ici, le choix de faire une \textbf{ACP centrée réduite} s'impose pour deux raisons :
@@ -475,9 +488,12 @@ result_acp$eig[,"eigenvalue"]
 \end{lstlisting}
 
 \begin{figure}
-\centering
-\includegraphics{report_files/figure-latex/bar-per-1.pdf}
-\caption{\label{fig:bar-per}Pourcentages cumulés d'inertie portés par chaque axe}
+
+{\centering \includegraphics{report_files/figure-latex/bar-per-1} 
+
+}
+
+\caption{Pourcentages cumulés d'inertie portés par chaque axe}\label{fig:bar-per}
 \end{figure}
 
 Regardons plus particulièrement les valeurs propres et les pourcentages d'inertie associés à chaque dimension.
@@ -494,10 +510,64 @@ Ainsi, à l'issue des 10000 lignes nous auront notre nuage de 10000 individus po
 Mais nous avons 6 variables qui définissent chaque individu ici, nous sommes donc passées par l'ACP qui a réduit cela à 3 dimensions. Nous
 allons regarder nos individus dans ces trois dimensions.
 
-\begin{lstlisting}[language=R]
-plot(result_acp, choix = "ind" , cex= 0.8, invisible = "quali", habillage = 11, select = "contrib 100", axes=c(1,2), unselect = 1)
-\end{lstlisting}
+\begin{figure}
 
-\includegraphics{report_files/figure-latex/unnamed-chunk-13-1.pdf}
+{\centering \includegraphics[width=2\linewidth]{report_files/figure-latex/projection-pop-12-1} 
+
+}
+
+\caption{Projection des chansons selon leur popularité dans le plan des axes principaux 1 et 2}\label{fig:projection-pop-12}
+\end{figure}
+\begin{figure}
+
+{\centering \includegraphics{report_files/figure-latex/projection-pop-13-1} 
+
+}
+
+\caption{Projection des chansons selon leur popularité dans le plan des axes principaux 1 et 3}\label{fig:projection-pop-13}
+\end{figure}
+
+On a plusieurs nuages de points et on voit une tendance qui ressortent par lecture graphique. A partir des figures
+\ref{fig:projection-pop-12} et \ref{fig:projection-pop-13}, on observe que la dimension 1 semble être assez représentative de la popularité d'une chanson:
+bleu quand les coordonnées sont diminués sur la dimension 1 et autre couleurs quand elles augmentent.
+
+\hypertarget{etude-des-variables}{%
+\subsection{Etude des variables}\label{etude-des-variables}}
+
+On représente le graphe des corrélations des variables:
+
+\begin{figure}
+
+{\centering \subfloat[les dimensions 1 et 2\label{fig:corvar-acp-12-1}]{\includegraphics[width=0.5\linewidth]{report_files/figure-latex/corvar-acp-12-1} }\subfloat[les dimensions 1 et 3\label{fig:corvar-acp-12-2}]{\includegraphics[width=0.5\linewidth]{report_files/figure-latex/corvar-acp-12-2} }
+
+}
+
+\caption{Graphe de corrélation entre les variables}\label{fig:corvar-acp-12}
+\end{figure}
+
+D'après la lecture de la figure 9, nous avons les relations suivantes:
+
+\begin{itemize}
+\tightlist
+\item
+  En suivant la direction positive de l'axe de dim 1, nous avons une augmentation de l'énergie et du volume de la chanson (ce qui est également logique car les 2 variables ont une relation forte selon \protect\hyperlink{volume-energy}{analyses bidimensionnelles entre le volume et l'énergie})
+\item
+  Dans le sens opposé, l'acoustique de la chanson monte. Il est également cohérent avec le fait que l'acoustique d'une chanson est généralement inversement proportionnelle à son énergie et à son volume.
+\item
+  La durée de la chanson pourrait être représentée à la fois par la dimension 2 et la dimension 3.
+\item
+  La même chose est vraie pour la vivacité (\passthrough{\lstinline!liveness!}).
+\end{itemize}
+
+On peut retrouver ces liaisons en observant la figure \ref{fig:corr-var-dim}.
+
+\begin{figure}
+
+{\centering \includegraphics{report_files/figure-latex/corr-var-dim-1} 
+
+}
+
+\caption{Le graphe de corrélation entre variables et dimensions}\label{fig:corr-var-dim}
+\end{figure}
 
 \end{document}

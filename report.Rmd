@@ -9,6 +9,7 @@ output:
     number_sections: true
     pandoc_args: --listings
     toc_depth: 3
+    toc: false
     latex_engine: xelatex
     includes:
       in_header: preamble.tex
@@ -23,7 +24,9 @@ library(ggplot2)
 library(dplyr)
 library(hrbrthemes)
 library(FactoMineR)
+library(corrplot)
 knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(fig.align = "center")
 options(width=80)
 ```
 
@@ -159,7 +162,7 @@ eta2(daf$acousticness, daf$pop.class)
 ```
 Avec $c_{y|x} \approx 0,4$, il existe une légère relation entre deux variables.
 
-### Entre deux variables quantitatives
+### Entre deux variables quantitatives {#volume-energy}
 
 Dans cette partie, nous étudions la relation entre le volume et l'énergie.
 
@@ -247,6 +250,64 @@ Ainsi, à l’issue des 10000 lignes nous auront notre nuage de 10000 individus 
 Mais nous avons 6 variables qui définissent chaque individu ici, nous sommes donc passées par l’ACP qui a réduit cela à 3 dimensions. Nous
 allons regarder nos individus dans ces trois dimensions.
 
-```{r}
-plot(result_acp, choix = "ind" , cex= 0.8, invisible = "quali", habillage = 11, select = "contrib 100", axes=c(1,2), unselect = 1)
+```{r projection-pop-12, out.width="200%", fig.cap="Projection des chansons selon leur popularité dans le plan des axes principaux 1 et 2", echo=FALSE}
+plot(result_acp, choix = "ind" , cex= 0.75, invisible = "quali", habillage = 11, 
+        axes=c(1,2), label="none", title="", grah.type="ggplot",
+    ) + 
+    theme_ipsum(base_family = "") +
+    theme(
+        axis.title.x = element_text(hjust = 0.5, size = 11),
+        axis.title.y = element_text(hjust = 0.5, size = 11),
+        axis.text.x = element_text(size = 10)
+    )
+```
+```{r projection-pop-13, fig.cap="Projection des chansons selon leur popularité dans le plan des axes principaux 1 et 3", echo=FALSE}
+plot(result_acp, choix = "ind" , cex= 0.75, invisible = "quali", habillage = 11, 
+        axes=c(1,3), label="none", title="", grah.type="ggplot",
+    ) + 
+    theme_ipsum(base_family = "") +
+    theme(
+        axis.title.x = element_text(hjust = 0.5, size = 11),
+        axis.title.y = element_text(hjust = 0.5, size = 11),
+        axis.text.x = element_text(size = 10)
+    )
+```
+
+On a plusieurs nuages de points et on voit une tendance qui ressortent par lecture graphique. A partir des figures 
+\@ref(fig:projection-pop-12) et \@ref(fig:projection-pop-13), on observe que la dimension 1 semble être assez représentative de la popularité d'une chanson: 
+bleu quand les coordonnées sont diminués sur la dimension 1 et autre couleurs quand elles augmentent.
+
+## Etude des variables
+
+On représente le graphe des corrélations des variables:
+
+```{r corvar-acp-12, fig.cap="Graphe de corrélation entre les variables", echo=FALSE, fig.show="hold", out.width="50%", fig.subcap=c("les dimensions 1 et 2", "les dimensions 1 et 3")}
+plot(result_acp, choix = "varcor" , cex= 0.75, select="contrib 6", shadowtext=TRUE,
+        axes=c(1,2), title="", grah.type="ggplot",
+    ) + 
+    theme_ipsum(base_family = "") +
+    theme(
+        axis.title.x = element_text(hjust = 0.5, size = 11),
+        axis.title.y = element_text(hjust = 0.5, size = 11),
+    )
+plot(result_acp, choix = "varcor" , cex= 0.75, select="contrib 6", shadowtext=TRUE,
+        axes=c(1,3), title="", grah.type="ggplot",
+    ) + 
+    theme_ipsum(base_family = "") +
+    theme(
+        axis.title.x = element_text(hjust = 0.5, size = 11),
+        axis.title.y = element_text(hjust = 0.5, size = 11),
+    )
+```
+
+D'après la lecture de la figure 9, nous avons les relations suivantes:
+
+- En suivant la direction positive de l'axe de dim 1, nous avons une augmentation de l'énergie et du volume de la chanson (ce qui est également logique car les 2 variables ont une relation forte selon [analyses bidimensionnelles entre le volume et l'énergie](#volume-energy))
+- Dans le sens opposé, l'acoustique de la chanson monte. Il est également cohérent avec le fait que l'acoustique d'une chanson est généralement inversement proportionnelle à son énergie et à son volume.
+- La durée de la chanson pourrait être représentée à la fois par la dimension 2 et la dimension 3.
+- La même chose est vraie pour la vivacité (`liveness`).
+
+On peut retrouver ces liaisons en observant la figure \@ref(fig:corr-var-dim).
+```{r corr-var-dim, fig.cap="Le graphe de corrélation entre variables et dimensions", echo=FALSE}
+corrplot(result_acp$var$cor[,1:3], method="number")
 ```
