@@ -76,6 +76,8 @@
 \setcounter{secnumdepth}{5}
 \usepackage{setspace}
 \usepackage{float}
+\usepackage{fontspec}
+\setmonofont{JetBrains Mono}[Contextuals=Alternate]
 \floatplacement{figure}{H}
 \lstset{ 
   language=R,                     % the language of the code
@@ -104,6 +106,9 @@
         {\normalfont\normalsize\bfseries}}
 \makeatother
 \setcounter{secnumdepth}{4}
+\hypersetup{
+    colorlinks = true,
+}
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
@@ -137,7 +142,6 @@ VO Van Nghia\\
 \newpage
 \doublespacing
 
-\hypersetup{linkcolor = black}
 \newpage
 \renewcommand{\contentsname}{Table des matières}
 \pagenumbering{roman}
@@ -202,7 +206,7 @@ Nom de variable statistique & Type de variable & Format dans R \\
 \endhead
 \passthrough{\lstinline!year!} & qualitative ordinale & \passthrough{\lstinline!integer!} \\
 \passthrough{\lstinline!acousticness!} & quantitative continue & \passthrough{\lstinline!numeric!} \\
-\passthrough{\lstinline!duration!} & quantitative continue\footnote{On choisi son nature est de quantitative continue parce que.} & \passthrough{\lstinline!numeric!} \\
+\passthrough{\lstinline!duration!} & quantitative discrète & \passthrough{\lstinline!numeric!} \\
 \passthrough{\lstinline!energy!} & quantitative continue & \passthrough{\lstinline!numeric!} \\
 \passthrough{\lstinline!explicit!} & qualitative nominale & \passthrough{\lstinline!logical!} \\
 \passthrough{\lstinline!key!} & qualitative nominale & \passthrough{\lstinline!factor!} \\
@@ -381,5 +385,37 @@ eta2(daf$acousticness, daf$pop.class)
 \end{lstlisting}
 
 Avec \(c_{y|x} \approx 0,4\), il existe une légère relation entre deux variables.
+
+\hypertarget{entre-deux-variables-quantitatives}{%
+\subsubsection{Entre deux variables quantitatives}\label{entre-deux-variables-quantitatives}}
+
+Dans cette partie, nous étudions la relation entre le volume et l'énergie.
+
+\hypertarget{repruxe9sentation-graphique-1}{%
+\paragraph{Représentation graphique}\label{repruxe9sentation-graphique-1}}
+
+\begin{figure}
+\centering
+\includegraphics{report_files/figure-latex/daf-point-energy-loudness-1.pdf}
+\caption{\label{fig:daf-point-energy-loudness}Nuage de points et droite de régression entre l'énergie et le volume}
+\end{figure}
+
+\hypertarget{indices-de-liaison}{%
+\paragraph{Indices de liaison}\label{indices-de-liaison}}
+
+\begin{lstlisting}[language=R]
+cor(daf$energy, daf$loudness)
+\end{lstlisting}
+
+\begin{lstlisting}
+## [1] 0.7744876
+\end{lstlisting}
+
+Avec cette valeur de corrélation et à partir de la figure \ref{fig:daf-point-energy-loudness},
+nous en déduisons qu'il existe un lien fort entre le volume d'une chanson et son énergie:
+plus le volume d'une chanson est forte, plus elle a d'énergie.
+
+\hypertarget{analyse-en-composantes-principales-acp}{%
+\section{Analyse en composantes principales (ACP)}\label{analyse-en-composantes-principales-acp}}
 
 \end{document}

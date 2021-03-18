@@ -19,6 +19,8 @@ output:
 library(scales)
 library(e1071)
 library(BioStatR)
+library(ggplot2)
+library(dplyr)
 knitr::opts_chunk$set(echo = TRUE)
 options(width=80)
 ```
@@ -48,7 +50,7 @@ Ici, nous précisons la nature de chaque variable et son format dans R.
 |--|--|--:|
 |`year`|qualitative ordinale|`integer`|
 |`acousticness`|quantitative continue|`numeric`|
-|`duration`|quantitative continue[^duration_quantitative_continue]|`numeric`|
+|`duration`|quantitative discrète|`numeric`|
 |`energy`|quantitative continue|`numeric`|
 |`explicit`|qualitative nominale|`logical`|
 |`key`|qualitative nominale|`factor`|
@@ -58,10 +60,7 @@ Ici, nous précisons la nature de chaque variable et son format dans R.
 |`tempo`|quantitative continue|`numeric`|
 |`pop.class`|qualitative ordinale|`factor`|
 
-[^duration_quantitative_continue]: On choisi son nature est de quantitative continue parce que.
 [^mode_logical]: On pose `FALSE` si la tonalité est mineure et `TRUE` si non.
-
-<!-- TODO(vnvo2409): Explain why [^1] --> 
 
 ### Charger les jeux de données dans R
 ```{r}
@@ -151,7 +150,36 @@ De l'autre côté, selon la partie précédente, la distribution des chansons av
 Il est démontrable que les gens aiment les chansons électroniques.
 
 #### Indice de liaison
+
 ```{r}
 eta2(daf$acousticness, daf$pop.class)
 ```
 Avec $c_{y|x} \approx 0,4$, il existe une légère relation entre deux variables.
+
+### Entre deux variables quantitatives
+
+Dans cette partie, nous étudions la relation entre le volume et l'énergie.
+
+#### Représentation graphique
+```{r daf-point-energy-loudness, fig.cap = "Nuage de points et droite de régression entre l'énergie et le volume", echo = FALSE, message = FALSE, results = FALSE}
+daf %>%
+    ggplot(aes(x = energy, y = loudness)) +
+    xlab("Énergie") +
+    ylab("Volume") +
+    geom_point(color = "#69b3a2", size = 2, alpha = 0.01) +
+    theme_classic() +
+    theme(
+        legend.position = "none"
+    ) +
+    geom_smooth(method='lm', color = "#ff0000", formula = y ~ x)
+```
+
+#### Indices de liaison
+```{r}
+cor(daf$energy, daf$loudness)
+```
+Avec cette valeur de corrélation et à partir de la figure \@ref(fig:daf-point-energy-loudness),
+nous en déduisons qu'il existe un lien fort entre le volume d'une chanson et son énergie:
+plus le volume d'une chanson est forte, plus elle a d'énergie.
+
+# Analyse en composantes principales (ACP)
