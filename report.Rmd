@@ -48,18 +48,18 @@ Ici, nous précisons la nature de chaque variable et son format dans R.
 |--|--|--:|
 |`year`|qualitative ordinale|`integer`|
 |`acousticness`|quantitative continue|`numeric`|
-|`duration`|quantitative continue[^1]|`numeric`|
+|`duration`|quantitative continue[^duration_quantitative_continue]|`numeric`|
 |`energy`|quantitative continue|`numeric`|
 |`explicit`|qualitative nominale|`logical`|
 |`key`|qualitative nominale|`factor`|
 |`liveness`|quantitative continue|`numeric`|
 |`loudness`|quantitative continue|`numeric`|
-|`mode`|qualitative nominale[^2]|`logical`|
+|`mode`|qualitative nominale[^mode_logical]|`logical`|
 |`tempo`|quantitative continue|`numeric`|
 |`pop.class`|qualitative ordinale|`factor`|
 
-[^1]: On choisi son nature est de quantitative continue parce que.
-[^2]: On pose `FALSE` si la tonalité est mineure et `TRUE` si non.
+[^duration_quantitative_continue]: On choisi son nature est de quantitative continue parce que.
+[^mode_logical]: On pose `FALSE` si la tonalité est mineure et `TRUE` si non.
 
 <!-- TODO(vnvo2409): Explain why [^1] --> 
 
@@ -121,14 +121,14 @@ l'ensemble de données est centré autour de sa médiane.
 ```{r}
 kurtosis(daf$acousticness)
 ```
-Du fait que son kurtosis est inférieur à $-1,2$ (le kurtosis de la distribution uniforme[^3]),
+Du fait que son kurtosis est inférieur à $-1,2$ (le kurtosis de la distribution uniforme[^wiki_kurtosis_normal]),
 sa distribution aura la forme d'une vallée (car la distribution uniforme est déjà une ligne).
 
 ```{r daf_acousticness_boxplot, fig.cap = "Histogramme d'acoustique des chansons", echo = FALSE}
 hist(daf$acousticness, main=NULL, ylab="Fréquence", xlab="Acoustique", col="cadetblue1")
 ```
 
-[^3]: https://en.wikipedia.org/wiki/Kurtosis#Other_well-known_distributions
+[^wiki_kurtosis_normal]: https://en.wikipedia.org/wiki/Kurtosis#Other_well-known_distributions
 
 ## Analyses bidimensionnelles
 
