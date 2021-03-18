@@ -345,6 +345,10 @@ kurtosis(daf$acousticness)
 Du fait que son kurtosis est inférieur à \(-1,2\) (le kurtosis de la distribution uniforme\footnote{\url{https://en.wikipedia.org/wiki/Kurtosis\#Other_well-known_distributions}}),
 sa distribution aura la forme d'une vallée (car la distribution uniforme est déjà une ligne).
 
+\begin{lstlisting}
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+\end{lstlisting}
+
 \begin{figure}
 
 {\centering \includegraphics{report_files/figure-latex/daf-acousticness-hist-1} 
@@ -569,5 +573,17 @@ On peut retrouver ces liaisons en observant la figure \ref{fig:corr-var-dim}.
 
 \caption{Le graphe de corrélation entre variables et dimensions}\label{fig:corr-var-dim}
 \end{figure}
+
+\hypertarget{conclusion}{%
+\section{Conclusion}\label{conclusion}}
+
+D'apres les etudes que l'on a etudie, on observe les relations entre les caracteristiques d'une chanson de l'annee 1921 a 2020.
+Premierement, il est evident qu'une chanson avec l'acoustique semble avoir moins d'energie et un faible volume.
+En plus, il nous semble que dans ce list, les gens n'aime pas trop les chansons avec l'acoustique.
+Neansmoins, nous n'avons pas encore establit de relation avec la duration et le tempo d'une chanson.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+Tout le source code est sur \url{https://github.com/vnvo2409/stat-3MIC}.
 
 \end{document}

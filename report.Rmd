@@ -129,10 +129,18 @@ kurtosis(daf$acousticness)
 Du fait que son kurtosis est inférieur à $-1,2$ (le kurtosis de la distribution uniforme[^wiki_kurtosis_normal]),
 sa distribution aura la forme d'une vallée (car la distribution uniforme est déjà une ligne).
 
-<!-- TODO(vnvo2409): ylab isn't Fréquence. -->
-```{r daf-acousticness-hist, fig.cap = "Histogramme d'acoustique des chansons", echo = FALSE}
-hist(daf$acousticness, main=NULL, ylab="Fréquence", xlab="Acoustique", col="cadetblue1")
+```{r daf-acousticness-hist, fig.cap = "Histogramme d'acoustique des chansons", echo = FALSE, warning=FALSE}
+daf %>%
+    ggplot(aes(x=acousticness)) +
+    geom_histogram(aes(y=..density..), colour="black", fill="lightblue")+
+    geom_density(colour = "red", size = 1) +
+    theme_ipsum(base_family = "") +
+    theme(
+        axis.title.x = element_text(hjust = 0.5, size = 11),
+        axis.title.y = element_text(hjust = 0.5, size = 11),
+    )
 ```
+
 
 Vous pouvez voir toutes les caractéristiques mentionnées ci-dessus dans la figure \@ref(fig:daf-acousticness-hist).
 
@@ -311,3 +319,14 @@ On peut retrouver ces liaisons en observant la figure \@ref(fig:corr-var-dim).
 ```{r corr-var-dim, fig.cap="Le graphe de corrélation entre variables et dimensions", echo=FALSE}
 corrplot(result_acp$var$cor[,1:3], method="number")
 ```
+
+# Conclusion
+
+D'apres les etudes que l'on a etudie, on observe les relations entre les caracteristiques d'une chanson de l'annee 1921 a 2020.
+Premierement, il est evident qu'une chanson avec l'acoustique semble avoir moins d'energie et un faible volume.
+En plus, il nous semble que dans ce list, les gens n'aime pas trop les chansons avec l'acoustique. 
+Neansmoins, nous n'avons pas encore establit de relation avec la duration et le tempo d'une chanson.
+
+---
+
+Tout le source code est sur [https://github.com/vnvo2409/stat-3MIC](https://github.com/vnvo2409/stat-3MIC).
