@@ -9,6 +9,7 @@ output:
     number_sections: true
     pandoc_args: --listings
     toc_depth: 3
+    toc: false
     latex_engine: xelatex
     includes:
       in_header: preamble.tex
@@ -23,7 +24,9 @@ library(ggplot2)
 library(dplyr)
 library(hrbrthemes)
 library(FactoMineR)
+library(corrplot)
 knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(fig.align = "center")
 options(width=80)
 ```
 
@@ -84,6 +87,9 @@ str(daf)
 
 ## Analyses unidimensionnelles
 ### Une variable qualitative - `pop.class`
+
+Ici, on s'intéresse naturellement à la popularité d'une chanson. Nous allons donc l'étudier en premier lieu.
+
 ```{r}
 summary(daf$pop.class)
 ```
@@ -97,10 +103,16 @@ print(label_percent()(c(pop_class_table) / sum(pop_class_table)), quote = F)
 barplot(as.matrix(pop_class_table), horiz = T, col = rainbow(length(pop_class_table),alpha=.5), ylim=c(0, 10), legend.text = levels(daf$pop.class))
 ```
 
-On peut noter que dans cet ensemble de données, la plupart des chansons ne sont pas populaires ($31,5%$).
+On peut noter que dans cet ensemble de données et le figure \@ref(fig:pop-class-table), la plupart des chansons ne sont pas populaires ($31,5%$).
 Plus le niveau de popularité est élevé, moins les chansons peuvent atteindre ce niveau.
 
 ### Une variable quantitative - `acousticness`
+
+On s’intéresse maitenant aux variables quantitatives.
+Pour cela, les données sont représentées par des boxplots qui permettent de visualiser pour chaque variable la répartition des données à travers la médiane,
+les quartiles et les valeurs extrêmes. Le raisonnement étant très répétitif pour chaque variable,
+nous nous intéressons seulement à une variable qui a une distribution très intéressant : `acousticness`.
+
 #### Résumé
 
 ```{r}
@@ -112,7 +124,21 @@ D'après le résultat ci-dessus, on a:
 - Le deuxième quartile $q_{0.5}$ est $0.5085$
 - Le troisième quartile $q_{0.75}$ est $0.8930$
 
-<!-- TODO(vnvo2409): Explain this result and say that a song is either acoustic or electronic. --> 
+```{r daf-acousticness-boxplot, fig.cap = "Boxplot de l'acoustique", echo = FALSE}
+daf %>%
+    ggplot() + 
+    geom_boxplot(aes(y = acousticness), width=0.5) +
+    scale_x_discrete() +
+    theme_ipsum(base_family = "") +
+    theme(
+        axis.title.y = element_text(hjust = 0.5),
+    )
+```
+
+D'après le boxplot \@ref(fig:daf-acousticness-boxplot), on observe un très grand domaine entre les 2 points $q_{0.25}$ et $q_{0.75}$.
+On peut deduire que le densité de chansons qui est etremenement acoustique ou electronique et très grand. 
+Cela veut dire que une chansons n'a la tendence d'etre écrit ou pour que l'acoustique ou pour que l'electronique.
+
 #### Distribution
 ```{r}
 skewness(daf$acousticness)
@@ -126,10 +152,18 @@ kurtosis(daf$acousticness)
 Du fait que son kurtosis est inférieur à $-1,2$ (le kurtosis de la distribution uniforme[^wiki_kurtosis_normal]),
 sa distribution aura la forme d'une vallée (car la distribution uniforme est déjà une ligne).
 
-<!-- TODO(vnvo2409): ylab isn't Fréquence. -->
-```{r daf-acousticness-hist, fig.cap = "Histogramme d'acoustique des chansons", echo = FALSE}
-hist(daf$acousticness, main=NULL, ylab="Fréquence", xlab="Acoustique", col="cadetblue1")
+```{r daf-acousticness-hist, fig.cap = "Histogramme d'acoustique des chansons", echo = FALSE, warning=FALSE, message=FALSE}
+daf %>%
+    ggplot(aes(x=acousticness)) +
+    geom_histogram(aes(y=..density..), colour="black", fill="lightblue") +
+    geom_density(colour = "red", size = 1) +
+    theme_ipsum(base_family = "") +
+    theme(
+        axis.title.x = element_text(hjust = 0.5, size = 11),
+        axis.title.y = element_text(hjust = 0.5, size = 11),
+    )
 ```
+
 
 Vous pouvez voir toutes les caractéristiques mentionnées ci-dessus dans la figure \@ref(fig:daf-acousticness-hist).
 
@@ -159,7 +193,7 @@ eta2(daf$acousticness, daf$pop.class)
 ```
 Avec $c_{y|x} \approx 0,4$, il existe une légère relation entre deux variables.
 
-### Entre deux variables quantitatives
+### Entre deux variables quantitatives {#volume-energy}
 
 Dans cette partie, nous étudions la relation entre le volume et l'énergie.
 
@@ -247,6 +281,75 @@ Ainsi, à l’issue des 10000 lignes nous auront notre nuage de 10000 individus 
 Mais nous avons 6 variables qui définissent chaque individu ici, nous sommes donc passées par l’ACP qui a réduit cela à 3 dimensions. Nous
 allons regarder nos individus dans ces trois dimensions.
 
-```{r}
-plot(result_acp, choix = "ind" , cex= 0.8, invisible = "quali", habillage = 11, select = "contrib 100", axes=c(1,2), unselect = 1)
+```{r projection-pop-12, out.width="200%", fig.cap="Projection des chansons selon leur popularité dans le plan des axes principaux 1 et 2", echo=FALSE}
+plot(result_acp, choix = "ind" , cex= 0.75, invisible = "quali", habillage = 11, 
+        axes=c(1,2), label="none", title="", grah.type="ggplot",
+    ) + 
+    theme_ipsum(base_family = "") +
+    theme(
+        axis.title.x = element_text(hjust = 0.5, size = 11),
+        axis.title.y = element_text(hjust = 0.5, size = 11),
+        axis.text.x = element_text(size = 10)
+    )
 ```
+```{r projection-pop-13, fig.cap="Projection des chansons selon leur popularité dans le plan des axes principaux 1 et 3", echo=FALSE}
+plot(result_acp, choix = "ind" , cex= 0.75, invisible = "quali", habillage = 11, 
+        axes=c(1,3), label="none", title="", grah.type="ggplot",
+    ) + 
+    theme_ipsum(base_family = "") +
+    theme(
+        axis.title.x = element_text(hjust = 0.5, size = 11),
+        axis.title.y = element_text(hjust = 0.5, size = 11),
+        axis.text.x = element_text(size = 10)
+    )
+```
+
+On a plusieurs nuages de points et on voit une tendance qui ressortent par lecture graphique. A partir des figures 
+\@ref(fig:projection-pop-12) et \@ref(fig:projection-pop-13), on observe que la dimension 1 semble être assez représentative de la popularité d'une chanson: 
+bleu quand les coordonnées sont diminués sur la dimension 1 et autre couleurs quand elles augmentent.
+
+## Etude des variables
+
+On représente le graphe des corrélations des variables:
+
+```{r corvar-acp-12, fig.cap="Graphe de corrélation entre les variables", echo=FALSE, fig.show="hold", out.width="50%", fig.subcap=c("les dimensions 1 et 2", "les dimensions 1 et 3")}
+plot(result_acp, choix = "varcor" , cex= 0.75, select="contrib 6", shadowtext=TRUE,
+        axes=c(1,2), title="", grah.type="ggplot",
+    ) + 
+    theme_ipsum(base_family = "") +
+    theme(
+        axis.title.x = element_text(hjust = 0.5, size = 11),
+        axis.title.y = element_text(hjust = 0.5, size = 11),
+    )
+plot(result_acp, choix = "varcor" , cex= 0.75, select="contrib 6", shadowtext=TRUE,
+        axes=c(1,3), title="", grah.type="ggplot",
+    ) + 
+    theme_ipsum(base_family = "") +
+    theme(
+        axis.title.x = element_text(hjust = 0.5, size = 11),
+        axis.title.y = element_text(hjust = 0.5, size = 11),
+    )
+```
+
+D'après la lecture de la figure 9, nous avons les relations suivantes:
+
+- En suivant la direction positive de l'axe de dim 1, nous avons une augmentation de l'énergie et du volume de la chanson (ce qui est également logique car les 2 variables ont une relation forte selon [analyses bidimensionnelles entre le volume et l'énergie](#volume-energy))
+- Dans le sens opposé, l'acoustique de la chanson monte. Il est également cohérent avec le fait que l'acoustique d'une chanson est généralement inversement proportionnelle à son énergie et à son volume.
+- La durée de la chanson pourrait être représentée à la fois par la dimension 2 et la dimension 3.
+- La même chose est vraie pour la vivacité (`liveness`).
+
+On peut retrouver ces liaisons en observant la figure \@ref(fig:corr-var-dim).
+```{r corr-var-dim, fig.cap="Le graphe de corrélation entre variables et dimensions", echo=FALSE}
+corrplot(result_acp$var$cor[,1:3], method="number")
+```
+
+# Conclusion
+
+D'apres les etudes que l'on a etudie, on observe les relations entre les caracteristiques d'une chanson de l'annee 1921 a 2020.
+Premierement, il est evident qu'une chanson avec l'acoustique semble avoir moins d'energie et un faible volume.
+En plus, il nous semble que dans ce list, les gens n'aime pas trop les chansons avec l'acoustique. 
+Neansmoins, nous n'avons pas encore establit de relation avec la duration et le tempo d'une chanson.
+
+---
+
+Tout le source code est sur [https://github.com/vnvo2409/stat-3MIC](https://github.com/vnvo2409/stat-3MIC).

@@ -259,6 +259,8 @@ str(daf)
 \hypertarget{une-variable-qualitative---pop.class}{%
 \subsubsection{\texorpdfstring{Une variable qualitative - \texttt{pop.class}}{Une variable qualitative - pop.class}}\label{une-variable-qualitative---pop.class}}
 
+Ici, on s'intéresse naturellement à la popularité d'une chanson. Nous allons donc l'étudier en premier lieu.
+
 \begin{lstlisting}[language=R]
 summary(daf$pop.class)
 \end{lstlisting}
@@ -289,12 +291,17 @@ print(label_percent()(c(pop_class_table) / sum(pop_class_table)), quote = F)
 \caption{Diagramme en barre de popularité}\label{fig:pop-class-table}
 \end{figure}
 
-On peut noter que dans cet ensemble de données, la plupart des chansons ne sont pas populaires (\(31,5%
+On peut noter que dans cet ensemble de données et le figure \ref{fig:pop-class-table}, la plupart des chansons ne sont pas populaires (\(31,5%
 \)).
 Plus le niveau de popularité est élevé, moins les chansons peuvent atteindre ce niveau.
 
 \hypertarget{une-variable-quantitative---acousticness}{%
 \subsubsection{\texorpdfstring{Une variable quantitative - \texttt{acousticness}}{Une variable quantitative - acousticness}}\label{une-variable-quantitative---acousticness}}
+
+On s'intéresse maitenant aux variables quantitatives.
+Pour cela, les données sont représentées par des boxplots qui permettent de visualiser pour chaque variable la répartition des données à travers la médiane,
+les quartiles et les valeurs extrêmes. Le raisonnement étant très répétitif pour chaque variable,
+nous nous intéressons seulement à une variable qui a une distribution très intéressant : \passthrough{\lstinline!acousticness!}.
 
 \hypertarget{ruxe9sumuxe9}{%
 \paragraph{Résumé}\label{ruxe9sumuxe9}}
@@ -320,6 +327,19 @@ D'après le résultat ci-dessus, on a:
   Le troisième quartile \(q_{0.75}\) est \(0.8930\)
 \end{itemize}
 
+\begin{figure}
+
+{\centering \includegraphics{report_files/figure-latex/daf-acousticness-boxplot-1} 
+
+}
+
+\caption{Boxplot de l'acoustique}\label{fig:daf-acousticness-boxplot}
+\end{figure}
+
+D'après le boxplot \ref{fig:daf-acousticness-boxplot}, on observe un très grand domaine entre les 2 points \(q_{0.25}\) et \(q_{0.75}\).
+On peut deduire que le densité de chansons qui est etremenement acoustique ou electronique et très grand.
+Cela veut dire que une chansons n'a la tendence d'etre écrit ou pour que l'acoustique ou pour que l'electronique.
+
 \hypertarget{distribution}{%
 \paragraph{Distribution}\label{distribution}}
 
@@ -344,10 +364,6 @@ kurtosis(daf$acousticness)
 
 Du fait que son kurtosis est inférieur à \(-1,2\) (le kurtosis de la distribution uniforme\footnote{\url{https://en.wikipedia.org/wiki/Kurtosis\#Other_well-known_distributions}}),
 sa distribution aura la forme d'une vallée (car la distribution uniforme est déjà une ligne).
-
-\begin{lstlisting}
-## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-\end{lstlisting}
 
 \begin{figure}
 

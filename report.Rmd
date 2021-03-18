@@ -87,6 +87,9 @@ str(daf)
 
 ## Analyses unidimensionnelles
 ### Une variable qualitative - `pop.class`
+
+Ici, on s'intéresse naturellement à la popularité d'une chanson. Nous allons donc l'étudier en premier lieu.
+
 ```{r}
 summary(daf$pop.class)
 ```
@@ -100,10 +103,16 @@ print(label_percent()(c(pop_class_table) / sum(pop_class_table)), quote = F)
 barplot(as.matrix(pop_class_table), horiz = T, col = rainbow(length(pop_class_table),alpha=.5), ylim=c(0, 10), legend.text = levels(daf$pop.class))
 ```
 
-On peut noter que dans cet ensemble de données, la plupart des chansons ne sont pas populaires ($31,5%$).
+On peut noter que dans cet ensemble de données et le figure \@ref(fig:pop-class-table), la plupart des chansons ne sont pas populaires ($31,5%$).
 Plus le niveau de popularité est élevé, moins les chansons peuvent atteindre ce niveau.
 
 ### Une variable quantitative - `acousticness`
+
+On s’intéresse maitenant aux variables quantitatives.
+Pour cela, les données sont représentées par des boxplots qui permettent de visualiser pour chaque variable la répartition des données à travers la médiane,
+les quartiles et les valeurs extrêmes. Le raisonnement étant très répétitif pour chaque variable,
+nous nous intéressons seulement à une variable qui a une distribution très intéressant : `acousticness`.
+
 #### Résumé
 
 ```{r}
@@ -115,7 +124,21 @@ D'après le résultat ci-dessus, on a:
 - Le deuxième quartile $q_{0.5}$ est $0.5085$
 - Le troisième quartile $q_{0.75}$ est $0.8930$
 
-<!-- TODO(vnvo2409): Explain this result and say that a song is either acoustic or electronic. --> 
+```{r daf-acousticness-boxplot, fig.cap = "Boxplot de l'acoustique", echo = FALSE}
+daf %>%
+    ggplot() + 
+    geom_boxplot(aes(y = acousticness), width=0.5) +
+    scale_x_discrete() +
+    theme_ipsum(base_family = "") +
+    theme(
+        axis.title.y = element_text(hjust = 0.5),
+    )
+```
+
+D'après le boxplot \@ref(fig:daf-acousticness-boxplot), on observe un très grand domaine entre les 2 points $q_{0.25}$ et $q_{0.75}$.
+On peut deduire que le densité de chansons qui est etremenement acoustique ou electronique et très grand. 
+Cela veut dire que une chansons n'a la tendence d'etre écrit ou pour que l'acoustique ou pour que l'electronique.
+
 #### Distribution
 ```{r}
 skewness(daf$acousticness)
@@ -129,10 +152,10 @@ kurtosis(daf$acousticness)
 Du fait que son kurtosis est inférieur à $-1,2$ (le kurtosis de la distribution uniforme[^wiki_kurtosis_normal]),
 sa distribution aura la forme d'une vallée (car la distribution uniforme est déjà une ligne).
 
-```{r daf-acousticness-hist, fig.cap = "Histogramme d'acoustique des chansons", echo = FALSE, warning=FALSE}
+```{r daf-acousticness-hist, fig.cap = "Histogramme d'acoustique des chansons", echo = FALSE, warning=FALSE, message=FALSE}
 daf %>%
     ggplot(aes(x=acousticness)) +
-    geom_histogram(aes(y=..density..), colour="black", fill="lightblue")+
+    geom_histogram(aes(y=..density..), colour="black", fill="lightblue") +
     geom_density(colour = "red", size = 1) +
     theme_ipsum(base_family = "") +
     theme(
