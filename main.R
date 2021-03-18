@@ -17,3 +17,6 @@ summary(daf$pop.class)
 pop_class_table <- table(daf$pop.class)
 print(label_percent()(c(pop_class_table) / sum(pop_class_table)), quote = FALSE)
 pie(pop_class_table, col = rainbow(length(pop_class_table)))
+
+dafacp <- select_if(daf, is.numeric)
+dafacp <- dafacp[,-1] # remove the first column of `dafacp` (which is `year`)

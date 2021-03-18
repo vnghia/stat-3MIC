@@ -3,7 +3,7 @@
 \PassOptionsToPackage{hyphens}{url}
 %
 \documentclass[
-  12pt,
+  11pt,
   xcolor = usenames,dvipsnames]{article}
 \usepackage{amsmath,amssymb}
 \usepackage{lmodern}
@@ -77,6 +77,7 @@
 \usepackage{setspace}
 \usepackage{float}
 \usepackage{fontspec}
+\usepackage{subfig}
 \setmonofont{JetBrains Mono}[Contextuals=Alternate]
 \floatplacement{figure}{H}
 \lstset{ 
@@ -148,6 +149,9 @@ VO Van Nghia\\
 \tableofcontents
 \addcontentsline{toc}{section}{\contentsname}
 
+\renewcommand{\listfigurename}{Table des figures}
+\listoffigures
+
 \newpage
 \pagenumbering{arabic}
 
@@ -214,7 +218,7 @@ Nom de variable statistique & Type de variable & Format dans R \\
 \passthrough{\lstinline!loudness!} & quantitative continue & \passthrough{\lstinline!numeric!} \\
 \passthrough{\lstinline!mode!} & qualitative nominale\footnote{On pose \passthrough{\lstinline!FALSE!} si la tonalité est mineure et \passthrough{\lstinline!TRUE!} si non.} & \passthrough{\lstinline!logical!} \\
 \passthrough{\lstinline!tempo!} & quantitative continue & \passthrough{\lstinline!numeric!} \\
-\passthrough{\lstinline!pop.class!} & qualitative ordinale & \passthrough{\lstinline!factor!} \\
+\passthrough{\lstinline!pop.class!} & qualitative ordinale & \passthrough{\lstinline!ordered!} \\
 \bottomrule
 \end{longtable}
 
@@ -231,6 +235,7 @@ LoadDataset <- function(fname) {
     dataframe <- read.csv(fname, colClasses = colclasses)
     dataframe$explicit <- as.logical(dataframe$explicit)
     dataframe$mode <- as.logical(dataframe$mode)
+    dataframe$pop.class <- ordered(dataframe$pop.class)
     return(dataframe)
 }
 daf <- LoadDataset("dataset.csv")
@@ -249,7 +254,7 @@ str(daf)
 ##  $ loudness    : num  -8.16 -11.64 -8.4 -8.12 -10.65 ...
 ##  $ mode        : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
 ##  $ tempo       : num  157.1 85.3 101.3 82.4 156.3 ...
-##  $ pop.class   : Factor w/ 4 levels "A","B","C","D": 3 3 3 3 3 1 4 4 2 4 ...
+##  $ pop.class   : Ord.factor w/ 4 levels "A"<"B"<"C"<"D": 3 3 3 3 3 1 4 4 2 4 ...
 \end{lstlisting}
 
 \hypertarget{analyses-unidimensionnelles}{%
@@ -417,5 +422,82 @@ plus le volume d'une chanson est forte, plus elle a d'énergie.
 
 \hypertarget{analyse-en-composantes-principales-acp}{%
 \section{Analyse en composantes principales (ACP)}\label{analyse-en-composantes-principales-acp}}
+
+Tout d'abord, nous supprimerons toutes les colonnes qualitatives de
+l'ensemble de données (qui sont \passthrough{\lstinline!year!}, \passthrough{\lstinline!explicit!}, \passthrough{\lstinline!key!}, \passthrough{\lstinline!mode!} et \passthrough{\lstinline!pop.class!})
+
+\begin{lstlisting}[language=R]
+dafacp <- select_if(daf, is.numeric)
+dafacp <- dafacp[,-1] # remove the first column of `dafacp` (which is `year`)
+\end{lstlisting}
+
+\hypertarget{choix-du-type-dacp-ruxe9alisuxe9}{%
+\subsection{Choix du type d'ACP réalisé}\label{choix-du-type-dacp-ruxe9alisuxe9}}
+
+\begin{figure}
+\subfloat[Des données brutes\label{fig:boxplot-comparison-1}]{\includegraphics[width=0.5\linewidth]{report_files/figure-latex/boxplot-comparison-1} }\subfloat[Des données centrées réduites\label{fig:boxplot-comparison-2}]{\includegraphics[width=0.5\linewidth]{report_files/figure-latex/boxplot-comparison-2} }\caption{Boxplots des données quantitatives}\label{fig:boxplot-comparison}
+\end{figure}
+
+Ici, le choix de faire une \textbf{ACP centrée réduite} s'impose pour deux raisons :
+
+\begin{itemize}
+\tightlist
+\item
+  Les données des différentes variables ne sont pas du tout à la même échelle comme on peut voir dans le figure \ref{fig:boxplot-comparison}.
+\item
+  Elles ont des unités différentes.
+\end{itemize}
+
+\hypertarget{factominer}{%
+\subsection{FactoMineR}\label{factominer}}
+
+Nous allons, à partir d'ici, utiliser la librairie \passthrough{\lstinline!FactoMineR!} pour effectuer l'ACP en incluant directement l'étape de centrer réduire faite plus haut.
+L'idée est de se dire que parmi nos 6 variables, nous avons de l'information redondante et donc de passer en dimension plus faible
+(2 ou 3 pour faciliter la représentation) grâce à des méta-variables. Seulement, nous ne pouvons choisir ces méta-variables au hasard,
+elles doivent correspondre aux directions selon lesquelles on a le plus de variabilité. La variabilité totale, qui est l'inertie,
+est répartie entre les 6 dimensions.
+
+\begin{lstlisting}[language=R]
+result_acp <- PCA(daf, scale.unit = TRUE, ncp = 6, quali.sup = c(1, 5, 6, 9, 11), graph = FALSE)
+\end{lstlisting}
+
+Avec FactoMineR, nous effectuons ici une ACP à 6 dimensions (\passthrough{\lstinline!ncp = 6!} pour nos 6 variables quantitatives) et
+nous rajoutons les autres 5 variables comme variables qualitatives supplémentaires
+(elles nous serviront lors de l'interprétation).
+
+\begin{lstlisting}[language=R]
+result_acp$eig[,"eigenvalue"]
+\end{lstlisting}
+
+\begin{lstlisting}
+##    comp 1    comp 2    comp 3    comp 4    comp 5    comp 6 
+## 2.5169626 1.0407603 0.9768164 0.8844294 0.4183029 0.1627285
+\end{lstlisting}
+
+\begin{figure}
+\centering
+\includegraphics{report_files/figure-latex/bar-per-1.pdf}
+\caption{\label{fig:bar-per}Pourcentages cumulés d'inertie portés par chaque axe}
+\end{figure}
+
+Regardons plus particulièrement les valeurs propres et les pourcentages d'inertie associés à chaque dimension.
+Comme on s'y attend, l'ACP classe les dimensions de la plus influente à la moins influente.
+Ici, nous choisissons de garder \(75\%\) de variabilité (ce qui est déja un très bon seuil).
+Ce dernier est atteint par la dimension 3 comme l'indique la droite bleu sur le graphe de pourcentages cumulés d'inertie.
+Nous prenons donc les 3 premières dimensions.
+
+\hypertarget{etude-des-individus}{%
+\subsection{Etude des individus}\label{etude-des-individus}}
+
+Pour étudier les individus, on se rappelle qu'une ligne du tableau de départ correspond à un individu qu'on veut représenter par un point sur un graphique.
+Ainsi, à l'issue des 10000 lignes nous auront notre nuage de 10000 individus points représentant les individus. Cela aurait été simple avec deux varibles x et y, le point serait représenter dans un plan à 2 dimensions (de même avec 3 variables en 3 dimensions).
+Mais nous avons 6 variables qui définissent chaque individu ici, nous sommes donc passées par l'ACP qui a réduit cela à 3 dimensions. Nous
+allons regarder nos individus dans ces trois dimensions.
+
+\begin{lstlisting}[language=R]
+plot(result_acp, choix = "ind" , cex= 0.8, invisible = "quali", habillage = 11, select = "contrib 100", axes=c(1,2), unselect = 1)
+\end{lstlisting}
+
+\includegraphics{report_files/figure-latex/unnamed-chunk-13-1.pdf}
 
 \end{document}
