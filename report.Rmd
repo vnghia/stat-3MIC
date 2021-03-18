@@ -1,11 +1,13 @@
 ---
 fontsize: 12pt
+classoption: xcolor = usenames,dvipsnames
 output:
   pdf_document:
     fig_caption: true
     highlight: tango
     keep_tex: true
     number_sections: true
+    pandoc_args: --listings
     toc_depth: 3
     latex_engine: xelatex
     includes:
@@ -75,6 +77,7 @@ LoadDataset <- function(fname) {
     return(dataframe)
 }
 daf <- LoadDataset("dataset.csv")
+str(daf)
 ```
 
 ## Analyses unidimensionnelles
