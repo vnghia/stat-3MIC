@@ -75,6 +75,8 @@
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \setcounter{secnumdepth}{5}
 \usepackage{setspace}
+\usepackage{float}
+\floatplacement{figure}{H}
 \lstset{ 
   language=R,                     % the language of the code
   basicstyle=\small\ttfamily, % the size of the fonts that are used for the code
@@ -146,58 +148,50 @@ VO Van Nghia\\
 \pagenumbering{arabic}
 
 
+{
+\setcounter{tocdepth}{3}
+\tableofcontents
+}
 \hypertarget{statistiques-descriptives-unidimensionnelle-et-bidimensionnelle}{%
-\section{Statistiques descriptives unidimensionnelle et
-bidimensionnelle}\label{statistiques-descriptives-unidimensionnelle-et-bidimensionnelle}}
+\section{Statistiques descriptives unidimensionnelle et bidimensionnelle}\label{statistiques-descriptives-unidimensionnelle-et-bidimensionnelle}}
 
 \hypertarget{la-nature-des-jeux-de-donnuxe9es}{%
-\subsection{La nature des jeux de
-données}\label{la-nature-des-jeux-de-donnuxe9es}}
+\subsection{La nature des jeux de données}\label{la-nature-des-jeux-de-donnuxe9es}}
 
 \hypertarget{des-jeux-de-donnuxe9es}{%
 \subsubsection{Des jeux de données}\label{des-jeux-de-donnuxe9es}}
 
-Ces jeux de données se composent de 10000 chansons extraites de la base
-de données Spotify. Chaque ligne contient 11 variables statistiques
-comme suit:
+Ces jeux de données se composent de 10000 chansons extraites de la base de données Spotify.
+Chaque ligne contient 11 variables statistiques comme suit:
 
 \begin{itemize}
 \tightlist
 \item
   \passthrough{\lstinline!year!}: année de sortie du morceau,
 \item
-  \passthrough{\lstinline!acousticness!}: métrique relative interne de
-  l'acoustique morceau,
+  \passthrough{\lstinline!acousticness!}: métrique relative interne de l'acoustique morceau,
 \item
-  \passthrough{\lstinline!duration!}: durée du morceau en millisecondes
-  (ms),
+  \passthrough{\lstinline!duration!}: durée du morceau en millisecondes (ms),
 \item
-  \passthrough{\lstinline!energy!}: métrique relative interne de
-  l'intensité, des rythmes du morceau,
+  \passthrough{\lstinline!energy!}: métrique relative interne de l'intensité, des rythmes du morceau,
 \item
-  \passthrough{\lstinline!explicit!}: vaut 1 si le morceau contient des
-  vulgarités, et 0 sinon,
+  \passthrough{\lstinline!explicit!}: vaut 1 si le morceau contient des vulgarités, et 0 sinon,
 \item
   \passthrough{\lstinline!key!}: tonalité en début de morceau,
 \item
-  \passthrough{\lstinline!liveness!}: proportion du morceau où l'on
-  entend un public,
+  \passthrough{\lstinline!liveness!}: proportion du morceau où l'on entend un public,
 \item
-  \passthrough{\lstinline!loudness!}: mesure relative du volume du
-  morceau (en décibels, dB)
+  \passthrough{\lstinline!loudness!}: mesure relative du volume du morceau (en décibels, dB)
 \item
-  \passthrough{\lstinline!mode!}: mode du morceau (0 si la tonalité est
-  mineure, et 1 si la tonalité est majeure),
+  \passthrough{\lstinline!mode!}: mode du morceau (0 si la tonalité est mineure, et 1 si la tonalité est majeure),
 \item
-  \passthrough{\lstinline!tempo!}: le tempo du morceau, en battement par
-  minute (bpm),
+  \passthrough{\lstinline!tempo!}: le tempo du morceau, en battement par minute (bpm),
 \item
   \passthrough{\lstinline!pop.class!}: la popularité du morceau.
 \end{itemize}
 
 \hypertarget{des-variables-statistiques}{%
-\subsubsection{Des variables
-statistiques}\label{des-variables-statistiques}}
+\subsubsection{Des variables statistiques}\label{des-variables-statistiques}}
 
 Ici, nous précisons la nature de chaque variable et son format dans R.
 
@@ -206,37 +200,22 @@ Ici, nous précisons la nature de chaque variable et son format dans R.
 Nom de variable statistique & Type de variable & Format dans R \\
 \midrule
 \endhead
-\passthrough{\lstinline!year!} & qualitative ordinale &
-\passthrough{\lstinline!integer!} \\
-\passthrough{\lstinline!acousticness!} & quantitative continue &
-\passthrough{\lstinline!numeric!} \\
-\passthrough{\lstinline!duration!} & quantitative continue\footnote{On
-  choisi son nature est de quantitative continue parce que.} &
-\passthrough{\lstinline!numeric!} \\
-\passthrough{\lstinline!energy!} & quantitative continue &
-\passthrough{\lstinline!numeric!} \\
-\passthrough{\lstinline!explicit!} & qualitative nominale &
-\passthrough{\lstinline!logical!} \\
-\passthrough{\lstinline!key!} & qualitative nominale &
-\passthrough{\lstinline!factor!} \\
-\passthrough{\lstinline!liveness!} & quantitative continue &
-\passthrough{\lstinline!numeric!} \\
-\passthrough{\lstinline!loudness!} & quantitative continue &
-\passthrough{\lstinline!numeric!} \\
-\passthrough{\lstinline!mode!} & qualitative nominale\footnote{On pose
-  \passthrough{\lstinline!FALSE!} si la tonalité est mineure et
-  \passthrough{\lstinline!TRUE!} si non.} &
-\passthrough{\lstinline!logical!} \\
-\passthrough{\lstinline!tempo!} & quantitative continue &
-\passthrough{\lstinline!numeric!} \\
-\passthrough{\lstinline!pop.class!} & qualitative ordinale &
-\passthrough{\lstinline!factor!} \\
+\passthrough{\lstinline!year!} & qualitative ordinale & \passthrough{\lstinline!integer!} \\
+\passthrough{\lstinline!acousticness!} & quantitative continue & \passthrough{\lstinline!numeric!} \\
+\passthrough{\lstinline!duration!} & quantitative continue\footnote{On choisi son nature est de quantitative continue parce que.} & \passthrough{\lstinline!numeric!} \\
+\passthrough{\lstinline!energy!} & quantitative continue & \passthrough{\lstinline!numeric!} \\
+\passthrough{\lstinline!explicit!} & qualitative nominale & \passthrough{\lstinline!logical!} \\
+\passthrough{\lstinline!key!} & qualitative nominale & \passthrough{\lstinline!factor!} \\
+\passthrough{\lstinline!liveness!} & quantitative continue & \passthrough{\lstinline!numeric!} \\
+\passthrough{\lstinline!loudness!} & quantitative continue & \passthrough{\lstinline!numeric!} \\
+\passthrough{\lstinline!mode!} & qualitative nominale\footnote{On pose \passthrough{\lstinline!FALSE!} si la tonalité est mineure et \passthrough{\lstinline!TRUE!} si non.} & \passthrough{\lstinline!logical!} \\
+\passthrough{\lstinline!tempo!} & quantitative continue & \passthrough{\lstinline!numeric!} \\
+\passthrough{\lstinline!pop.class!} & qualitative ordinale & \passthrough{\lstinline!factor!} \\
 \bottomrule
 \end{longtable}
 
 \hypertarget{charger-les-jeux-de-donnuxe9es-dans-r}{%
-\subsubsection{Charger les jeux de données dans
-R}\label{charger-les-jeux-de-donnuxe9es-dans-r}}
+\subsubsection{Charger les jeux de données dans R}\label{charger-les-jeux-de-donnuxe9es-dans-r}}
 
 \begin{lstlisting}[language=R]
 LoadDataset <- function(fname) {
@@ -270,12 +249,10 @@ str(daf)
 \end{lstlisting}
 
 \hypertarget{analyses-unidimensionnelles}{%
-\subsection{Analyses
-unidimensionnelles}\label{analyses-unidimensionnelles}}
+\subsection{Analyses unidimensionnelles}\label{analyses-unidimensionnelles}}
 
 \hypertarget{une-variable-qualitative---pop.class}{%
-\subsubsection{\texorpdfstring{Une variable qualitative -
-\texttt{pop.class}}{Une variable qualitative - pop.class}}\label{une-variable-qualitative---pop.class}}
+\subsubsection{\texorpdfstring{Une variable qualitative - \texttt{pop.class}}{Une variable qualitative - pop.class}}\label{une-variable-qualitative---pop.class}}
 
 \begin{lstlisting}[language=R]
 summary(daf$pop.class)
@@ -286,10 +263,7 @@ summary(daf$pop.class)
 ##  940 2874 3038 3148
 \end{lstlisting}
 
-Il existe 4 niveaux de popularité (modalités). Commencer par
-\passthrough{\lstinline!A!} est le plus populaire et décroissant avec
-\passthrough{\lstinline!B!}, \passthrough{\lstinline!C!},
-\passthrough{\lstinline!D!}.
+Il existe 4 niveaux de popularité (modalités). Commencer par \passthrough{\lstinline!A!} est le plus populaire et décroissant avec \passthrough{\lstinline!B!}, \passthrough{\lstinline!C!}, \passthrough{\lstinline!D!}.
 
 \begin{lstlisting}[language=R]
 pop_class_table <- table(daf$pop.class)
@@ -303,18 +277,16 @@ print(label_percent()(c(pop_class_table) / sum(pop_class_table)), quote = F)
 
 \begin{figure}
 \centering
-\includegraphics{report_files/figure-latex/pop_class_table-1.pdf}
-\caption{Diagramme en barre de popularité}
+\includegraphics{report_files/figure-latex/pop-class-table-1.pdf}
+\caption{\label{fig:pop-class-table}Diagramme en barre de popularité}
 \end{figure}
 
-On peut noter que dans cet ensemble de données, la plupart des chansons
-ne sont pas populaires (\(31,5%
-\)). Plus le niveau de popularité est élevé, moins les chansons peuvent
-atteindre ce niveau.
+On peut noter que dans cet ensemble de données, la plupart des chansons ne sont pas populaires (\(31,5%
+\)).
+Plus le niveau de popularité est élevé, moins les chansons peuvent atteindre ce niveau.
 
 \hypertarget{une-variable-quantitative---acousticness}{%
-\subsubsection{\texorpdfstring{Une variable quantitative -
-\texttt{acousticness}}{Une variable quantitative - acousticness}}\label{une-variable-quantitative---acousticness}}
+\subsubsection{\texorpdfstring{Une variable quantitative - \texttt{acousticness}}{Une variable quantitative - acousticness}}\label{une-variable-quantitative---acousticness}}
 
 \hypertarget{ruxe9sumuxe9}{%
 \paragraph{Résumé}\label{ruxe9sumuxe9}}
@@ -351,8 +323,8 @@ skewness(daf$acousticness)
 ## [1] -0.01816556
 \end{lstlisting}
 
-Étant donné que son skewness est approximativement 0, nous pouvons
-conclure que l'ensemble de données est centré autour de sa médiane.
+Étant donné que son skewness est approximativement 0, nous pouvons conclure que
+l'ensemble de données est centré autour de sa médiane.
 
 \begin{lstlisting}[language=R]
 kurtosis(daf$acousticness)
@@ -362,50 +334,40 @@ kurtosis(daf$acousticness)
 ## [1] -1.613205
 \end{lstlisting}
 
-Du fait que son kurtosis est inférieur à \(-1,2\) (le kurtosis de la
-distribution uniforme\footnote{\url{https://en.wikipedia.org/wiki/Kurtosis\#Other_well-known_distributions}}),
-sa distribution aura la forme d'une vallée (car la distribution uniforme
-est déjà une ligne).
+Du fait que son kurtosis est inférieur à \(-1,2\) (le kurtosis de la distribution uniforme\footnote{\url{https://en.wikipedia.org/wiki/Kurtosis\#Other_well-known_distributions}}),
+sa distribution aura la forme d'une vallée (car la distribution uniforme est déjà une ligne).
 
 \begin{figure}
 \centering
-\includegraphics{report_files/figure-latex/daf_acousticness_boxplot-1.pdf}
-\caption{Histogramme d'acoustique des chansons}
+\includegraphics{report_files/figure-latex/daf-acousticness-hist-1.pdf}
+\caption{\label{fig:daf-acousticness-hist}Histogramme d'acoustique des chansons}
 \end{figure}
 
+Vous pouvez voir toutes les caractéristiques mentionnées ci-dessus dans la figure \ref{fig:daf-acousticness-hist}.
+
 \hypertarget{analyses-bidimensionnelles}{%
-\subsection{Analyses
-bidimensionnelles}\label{analyses-bidimensionnelles}}
+\subsection{Analyses bidimensionnelles}\label{analyses-bidimensionnelles}}
 
 \hypertarget{entre-une-variable-quantitative-et-une-qualitative}{%
-\subsubsection{Entre une variable quantitative et une
-qualitative}\label{entre-une-variable-quantitative-et-une-qualitative}}
+\subsubsection{Entre une variable quantitative et une qualitative}\label{entre-une-variable-quantitative-et-une-qualitative}}
 
-Dans cette partie, nous réutiliserons et analyserons les 2 variables
-précédentes (\passthrough{\lstinline!pop.class!} et
-\passthrough{\lstinline!acousticness!}).
+Dans cette partie, nous réutiliserons et analyserons les 2 variables précédentes (\passthrough{\lstinline!pop.class!} et \passthrough{\lstinline!acousticness!}).
 
 \hypertarget{repruxe9sentation-graphique}{%
 \paragraph{Représentation graphique}\label{repruxe9sentation-graphique}}
 
 \begin{figure}
 \centering
-\includegraphics{report_files/figure-latex/daf_acousticness_popclass_boxplot-1.pdf}
-\caption{Boxplot parallèles de la relation entre acoustique et
-popularité}
+\includegraphics{report_files/figure-latex/daf-acousticness-popclass-boxplot-1.pdf}
+\caption{\label{fig:daf-acousticness-popclass-boxplot}Boxplot parallèles de la relation entre acoustique et popularité}
 \end{figure}
 
-Notez à partir de notre graphique, les cases varient d'un facteur à
-l'autre, nous concluons que l'acoustique et la popularité sont liées
-l'une à l'autre.
+Notez à partir de notre graphique, les cases varient d'un facteur à l'autre,
+nous concluons que l'acoustique et la popularité sont liées l'une à l'autre.
 
-De plus, \(75\%\) des chansons populaires ont une acoustique inférieure
-à \(0,5\) tandis que celle de presque \(100\%\) des chansons les moins
-populaires est supérieure à \(0,5\). De l'autre côté, selon la partie
-précédente, la distribution des chansons avec l'acoustique est
-symétrique autour de sa médiane (ce qui indique qu'il y a presque le
-même nombre de chansons de 2 types). Il est démontrable que les gens
-aiment les chansons électroniques.
+De plus, \(75\%\) des chansons populaires ont une acoustique inférieure à \(0,5\) tandis que celle de presque \(100\%\) des chansons les moins populaires est supérieure à \(0,5\).
+De l'autre côté, selon la partie précédente, la distribution des chansons avec l'acoustique est symétrique autour de sa médiane (ce qui indique qu'il y a presque le même nombre de chansons de 2 types).
+Il est démontrable que les gens aiment les chansons électroniques.
 
 \hypertarget{indice-de-liaison}{%
 \paragraph{Indice de liaison}\label{indice-de-liaison}}
@@ -418,7 +380,6 @@ eta2(daf$acousticness, daf$pop.class)
 ## [1] 0.3673706
 \end{lstlisting}
 
-Avec \(c_{y|x} \approx 0,4\), il existe une légère relation entre deux
-variables.
+Avec \(c_{y|x} \approx 0,4\), il existe une légère relation entre deux variables.
 
 \end{document}

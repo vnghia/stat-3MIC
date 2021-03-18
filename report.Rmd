@@ -2,7 +2,7 @@
 fontsize: 12pt
 classoption: xcolor = usenames,dvipsnames
 output:
-  pdf_document:
+  bookdown::pdf_document2:
     fig_caption: true
     highlight: tango
     keep_tex: true
@@ -91,7 +91,7 @@ Il existe 4 niveaux de popularité (modalités). Commencer par `A` est le plus 
 pop_class_table <- table(daf$pop.class)
 print(label_percent()(c(pop_class_table) / sum(pop_class_table)), quote = F)
 ```
-```{r pop_class_table, fig.cap = "Diagramme en barre de popularité", echo = FALSE}
+```{r pop-class-table, fig.cap = "Diagramme en barre de popularité", echo = FALSE}
 barplot(as.matrix(pop_class_table), horiz = T, col = rainbow(length(pop_class_table),alpha=.5), ylim=c(0, 10), legend.text = levels(daf$pop.class))
 ```
 
@@ -124,9 +124,12 @@ kurtosis(daf$acousticness)
 Du fait que son kurtosis est inférieur à $-1,2$ (le kurtosis de la distribution uniforme[^wiki_kurtosis_normal]),
 sa distribution aura la forme d'une vallée (car la distribution uniforme est déjà une ligne).
 
-```{r daf_acousticness_boxplot, fig.cap = "Histogramme d'acoustique des chansons", echo = FALSE}
+<!-- TODO(vnvo2409): ylab isn't Fréquence. -->
+```{r daf-acousticness-hist, fig.cap = "Histogramme d'acoustique des chansons", echo = FALSE}
 hist(daf$acousticness, main=NULL, ylab="Fréquence", xlab="Acoustique", col="cadetblue1")
 ```
+
+Vous pouvez voir toutes les caractéristiques mentionnées ci-dessus dans la figure \@ref(fig:daf-acousticness-hist).
 
 [^wiki_kurtosis_normal]: https://en.wikipedia.org/wiki/Kurtosis#Other_well-known_distributions
 
@@ -136,7 +139,7 @@ hist(daf$acousticness, main=NULL, ylab="Fréquence", xlab="Acoustique", col="cad
 Dans cette partie, nous réutiliserons et analyserons les 2 variables précédentes (`pop.class` et `acousticness`).
 
 #### Représentation graphique
-```{r daf_acousticness_popclass_boxplot, fig.cap = "Boxplot parallèles de la relation entre acoustique et popularité", echo = FALSE}
+```{r daf-acousticness-popclass-boxplot, fig.cap = "Boxplot parallèles de la relation entre acoustique et popularité", echo = FALSE}
 boxplot(daf$acousticness ~ daf$pop.class, main=NULL, ylab="Acoustique", xlab="Popularité", outline = FALSE)
 ```
 
