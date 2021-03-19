@@ -165,7 +165,7 @@ VO Van Nghia\\
 \hypertarget{des-jeux-de-donnuxe9es}{%
 \subsubsection{Des jeux de données}\label{des-jeux-de-donnuxe9es}}
 
-Ces jeux de données se composent de 10000 chansons extraites de la base de données Spotify.
+Ces jeu de données se compose de 10000 chansons extraites de la base de données Spotify.
 Chaque ligne contient 11 variables statistiques comme suit:
 
 \begin{itemize}
@@ -173,7 +173,7 @@ Chaque ligne contient 11 variables statistiques comme suit:
 \item
   \passthrough{\lstinline!year!}: année de sortie du morceau,
 \item
-  \passthrough{\lstinline!acousticness!}: métrique relative interne de l'acoustique morceau,
+  \passthrough{\lstinline!acousticness!}: métrique relative à l'acoustique interne du morceau,
 \item
   \passthrough{\lstinline!duration!}: durée du morceau en millisecondes (ms),
 \item
@@ -270,7 +270,7 @@ summary(daf$pop.class)
 ##  940 2874 3038 3148
 \end{lstlisting}
 
-Il existe 4 niveaux de popularité (modalités). Commencer par \passthrough{\lstinline!A!} est le plus populaire et décroissant avec \passthrough{\lstinline!B!}, \passthrough{\lstinline!C!}, \passthrough{\lstinline!D!}.
+Il existe 4 niveaux de popularité (modalités). \passthrough{\lstinline!A!} étant le degré de popularité le plus élevé, et \passthrough{\lstinline!D!}, le plus bas.
 
 \begin{lstlisting}[language=R]
 pop_class_table <- table(daf$pop.class)
@@ -291,17 +291,17 @@ print(label_percent()(c(pop_class_table) / sum(pop_class_table)), quote = F)
 \caption{Diagramme en barre de popularité}\label{fig:pop-class-table}
 \end{figure}
 
-On peut noter que dans cet ensemble de données et le figure \ref{fig:pop-class-table}, la plupart des chansons ne sont pas populaires (\(31,5%
+En observant les données, ainsi que la figure \ref{fig:pop-class-table} on remarque que, la plupart des chansons ne sont pas populaires (\(31,5%
 \)).
 Plus le niveau de popularité est élevé, moins les chansons peuvent atteindre ce niveau.
 
 \hypertarget{une-variable-quantitative---acousticness}{%
 \subsubsection{\texorpdfstring{Une variable quantitative - \texttt{acousticness}}{Une variable quantitative - acousticness}}\label{une-variable-quantitative---acousticness}}
 
-On s'intéresse maitenant aux variables quantitatives.
+On s'intéresse maintenant aux variables quantitatives.
 Pour cela, les données sont représentées par des boxplots qui permettent de visualiser pour chaque variable la répartition des données à travers la médiane,
 les quartiles et les valeurs extrêmes. Le raisonnement étant très répétitif pour chaque variable,
-nous nous intéressons seulement à une variable qui a une distribution très intéressant : \passthrough{\lstinline!acousticness!}.
+nous nous intéressons seulement à une variable qui a une distribution relativement intéressante : \passthrough{\lstinline!acousticness!}.
 
 \hypertarget{ruxe9sumuxe9}{%
 \paragraph{Résumé}\label{ruxe9sumuxe9}}
@@ -336,9 +336,9 @@ D'après le résultat ci-dessus, on a:
 \caption{Boxplot de l'acoustique}\label{fig:daf-acousticness-boxplot}
 \end{figure}
 
-D'après le boxplot \ref{fig:daf-acousticness-boxplot}, on observe un très grand domaine entre les 2 points \(q_{0.25}\) et \(q_{0.75}\).
-On peut deduire que le densité de chansons qui est etremenement acoustique ou electronique et très grand.
-Cela veut dire que une chansons n'a la tendence d'etre écrit ou pour que l'acoustique ou pour que l'electronique.
+D'après le boxplot \ref{fig:daf-acousticness-boxplot}, on observe un très grand domaine de valeurs entre les 2 points \(q_{0.25}\) et \(q_{0.75}\).
+On peut en déduire que la densité des chansons extrêmement acoustique ou électronique est très grande.
+Cela veut donc dire que, de manière générale, une chanson est soit acoustique, soit électronique, et ainsi très peu de chansons se permettent de mélanger les deux styles.
 
 \hypertarget{distribution}{%
 \paragraph{Distribution}\label{distribution}}
@@ -396,7 +396,7 @@ Dans cette partie, nous réutiliserons et analyserons les 2 variables précéden
 \caption{Boxplot parallèles de la relation entre acoustique et popularité}\label{fig:daf-acousticness-popclass-boxplot}
 \end{figure}
 
-Notez à partir de notre graphique, les cases varient d'un facteur à l'autre,
+Notez à partir de notre graphique: le figure \ref{fig:daf-acousticness-popclass-boxplot}, les cases varient d'un facteur à l'autre,
 nous concluons que l'acoustique et la popularité sont liées l'une à l'autre.
 
 De plus, \(75\%\) des chansons populaires ont une acoustique inférieure à \(0,5\) tandis que celle de presque \(100\%\) des chansons les moins populaires est supérieure à \(0,5\).
@@ -448,8 +448,10 @@ Avec cette valeur de corrélation et à partir de la figure \ref{fig:daf-point-e
 nous en déduisons qu'il existe un lien fort entre le volume d'une chanson et son énergie:
 plus le volume d'une chanson est forte, plus elle a d'énergie.
 
-\hypertarget{analyse-en-composantes-principales-acp}{%
-\section{Analyse en composantes principales (ACP)}\label{analyse-en-composantes-principales-acp}}
+\hypertarget{autres-variables}{%
+\paragraph{Autres variables}\label{autres-variables}}
+
+Ici, nous allons tracer une table de corrélation pour avoir une vue plus générale sur la relation entre les variables.
 
 Tout d'abord, nous supprimerons toutes les colonnes qualitatives de
 l'ensemble de données (qui sont \passthrough{\lstinline!year!}, \passthrough{\lstinline!explicit!}, \passthrough{\lstinline!key!}, \passthrough{\lstinline!mode!} et \passthrough{\lstinline!pop.class!})
@@ -458,6 +460,20 @@ l'ensemble de données (qui sont \passthrough{\lstinline!year!}, \passthrough{\l
 dafacp <- select_if(daf, is.numeric)
 dafacp <- dafacp[,-1] # remove the first column of `dafacp` (which is `year`)
 \end{lstlisting}
+
+\begin{figure}
+
+{\centering \includegraphics{report_files/figure-latex/corr-dafacp-1} 
+
+}
+
+\caption{La table de corrélation des variables quantitatives}\label{fig:corr-dafacp}
+\end{figure}
+
+On observe une forte relation entre ces 3 variables: l'énergie, l'acoustique et le volume dans \ref{fig:corr-dafacp}.
+
+\hypertarget{analyse-en-composantes-principales-acp}{%
+\section{Analyse en composantes principales (ACP)}\label{analyse-en-composantes-principales-acp}}
 
 \hypertarget{choix-du-type-dacp-ruxe9alisuxe9}{%
 \subsection{Choix du type d'ACP réalisé}\label{choix-du-type-dacp-ruxe9alisuxe9}}
@@ -518,15 +534,16 @@ result_acp$eig[,"eigenvalue"]
 
 Regardons plus particulièrement les valeurs propres et les pourcentages d'inertie associés à chaque dimension.
 Comme on s'y attend, l'ACP classe les dimensions de la plus influente à la moins influente.
-Ici, nous choisissons de garder \(75\%\) de variabilité (ce qui est déja un très bon seuil).
-Ce dernier est atteint par la dimension 3 comme l'indique la droite rouge sur le graphe de pourcentages cumulés d'inertie.
+Ici, nous choisissons de garder \(75\%\) de variabilité (ce qui est déjà un très bon seuil).
+Ce dernier est atteint par la dimension 3 comme l'indique la droite rouge sur le graphe de pourcentages cumulés d'inertie. (le figure \ref{fig:bar-per})
 Nous prenons donc les 3 premières dimensions.
 
 \hypertarget{etude-des-individus}{%
 \subsection{Etude des individus}\label{etude-des-individus}}
 
 Pour étudier les individus, on se rappelle qu'une ligne du tableau de départ correspond à un individu qu'on veut représenter par un point sur un graphique.
-Ainsi, à l'issue des 10000 lignes nous auront notre nuage de 10000 individus points représentant les individus. Cela aurait été simple avec deux varibles x et y, le point serait représenter dans un plan à 2 dimensions (de même avec 3 variables en 3 dimensions).
+Ainsi, à l'issue des \(10000\) lignes nous aurons notre nuage de \(10000\) individus (soit \(10000\) points). Cela aurait été simple avec deux variables \(x\) et \(y\),
+le point serait représenté dans un plan à 2 dimensions (de même avec 3 variables en 3 dimensions).
 Mais nous avons 6 variables qui définissent chaque individu ici, nous sommes donc passées par l'ACP qui a réduit cela à 3 dimensions. Nous
 allons regarder nos individus dans ces trois dimensions.
 
@@ -539,9 +556,9 @@ allons regarder nos individus dans ces trois dimensions.
 \caption{Projection des chansons selon leur popularité}\label{fig:projection-pop-12-13}
 \end{figure}
 
-On a plusieurs nuages de points et on voit une tendance qui ressortent par lecture graphique. A partir du figure
+On a plusieurs nuages de points et on voit une tendance qui ressort par lecture graphique. A partir du figure
 \ref{fig:projection-pop-12-13}, on observe que la dimension 1 semble être assez représentative de la popularité d'une chanson:
-violet quand les coordonnées sont diminués sur la dimension 1 et autre couleurs quand elles augmentent.
+les couleurs correspondantes sont le violet pour les faibles coordonnées, et le bleu et le vert, pour les coordonnées les plus à droite.
 
 \hypertarget{etude-des-variables}{%
 \subsection{Etude des variables}\label{etude-des-variables}}
@@ -550,14 +567,14 @@ On représente le graphe des corrélations des variables:
 
 \begin{figure}
 
-{\centering \subfloat[les dimensions 1 et 2\label{fig:corvar-acp-12-1}]{\includegraphics[width=0.5\linewidth]{report_files/figure-latex/corvar-acp-12-1} }\subfloat[les dimensions 1 et 3\label{fig:corvar-acp-12-2}]{\includegraphics[width=0.5\linewidth]{report_files/figure-latex/corvar-acp-12-2} }
+{\centering \subfloat[les dimensions 1 et 2\label{fig:corvar-acp-12-13-1}]{\includegraphics[width=0.5\linewidth]{report_files/figure-latex/corvar-acp-12-13-1} }\subfloat[les dimensions 1 et 3\label{fig:corvar-acp-12-13-2}]{\includegraphics[width=0.5\linewidth]{report_files/figure-latex/corvar-acp-12-13-2} }
 
 }
 
-\caption{Graphe de corrélation entre les variables}\label{fig:corvar-acp-12}
+\caption{Graphe de corrélation entre les variables}\label{fig:corvar-acp-12-13}
 \end{figure}
 
-D'après la lecture de la figure 9, nous avons les relations suivantes:
+D'après la lecture de la figure \ref{fig:corvar-acp-12-13}, nous avons les relations suivantes:
 
 \begin{itemize}
 \tightlist
@@ -585,13 +602,13 @@ On peut retrouver ces liaisons en observant la figure \ref{fig:corr-var-dim}.
 \hypertarget{conclusion}{%
 \section{Conclusion}\label{conclusion}}
 
-D'apres les etudes que l'on a etudie, on observe les relations entre les caracteristiques d'une chanson de l'annee 1921 a 2020.
-Premierement, il est evident qu'une chanson avec l'acoustique semble avoir moins d'energie et un faible volume.
-En plus, il nous semble que dans ce list, les gens n'aime pas trop les chansons avec l'acoustique.
-Neansmoins, nous n'avons pas encore establit de relation avec la duration et le tempo d'une chanson.
+Nous avons observé les différentes relations entre les caractéristiques des chansons de l'année 1921 à 2020.
+Premièrement, il est évident qu'une chanson avec l'acoustique semble avoir moins d'énergie et un faible volume.
+En plus, il nous semble que dans cette liste, les gens n'aiment pas trop les chansons au style trop acoustique.
+Néanmoins, nous n'avons pas encore établi de relation avec la durée et le tempo d'une chanson.
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
-Tout le source code est sur \url{https://github.com/vnvo2409/stat-3MIC}.
+Tout le code source est sur \url{https://github.com/vnvo2409/stat-3MIC}.
 
 \end{document}
