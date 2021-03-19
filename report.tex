@@ -519,7 +519,7 @@ result_acp$eig[,"eigenvalue"]
 Regardons plus particulièrement les valeurs propres et les pourcentages d'inertie associés à chaque dimension.
 Comme on s'y attend, l'ACP classe les dimensions de la plus influente à la moins influente.
 Ici, nous choisissons de garder \(75\%\) de variabilité (ce qui est déja un très bon seuil).
-Ce dernier est atteint par la dimension 3 comme l'indique la droite bleu sur le graphe de pourcentages cumulés d'inertie.
+Ce dernier est atteint par la dimension 3 comme l'indique la droite rouge sur le graphe de pourcentages cumulés d'inertie.
 Nous prenons donc les 3 premières dimensions.
 
 \hypertarget{etude-des-individus}{%
@@ -532,24 +532,16 @@ allons regarder nos individus dans ces trois dimensions.
 
 \begin{figure}
 
-{\centering \includegraphics[width=2\linewidth]{report_files/figure-latex/projection-pop-12-1} 
+{\centering \subfloat[le plan des axes principaux 1 et 2\label{fig:projection-pop-12-13-1}]{\includegraphics[width=0.5\linewidth,height=0.5\textheight]{report_files/figure-latex/projection-pop-12-13-1} }\subfloat[le plan des axes principaux 1 et 3\label{fig:projection-pop-12-13-2}]{\includegraphics[width=0.5\linewidth,height=0.5\textheight]{report_files/figure-latex/projection-pop-12-13-2} }
 
 }
 
-\caption{Projection des chansons selon leur popularité dans le plan des axes principaux 1 et 2}\label{fig:projection-pop-12}
-\end{figure}
-\begin{figure}
-
-{\centering \includegraphics{report_files/figure-latex/projection-pop-13-1} 
-
-}
-
-\caption{Projection des chansons selon leur popularité dans le plan des axes principaux 1 et 3}\label{fig:projection-pop-13}
+\caption{Projection des chansons selon leur popularité}\label{fig:projection-pop-12-13}
 \end{figure}
 
-On a plusieurs nuages de points et on voit une tendance qui ressortent par lecture graphique. A partir des figures
-\ref{fig:projection-pop-12} et \ref{fig:projection-pop-13}, on observe que la dimension 1 semble être assez représentative de la popularité d'une chanson:
-bleu quand les coordonnées sont diminués sur la dimension 1 et autre couleurs quand elles augmentent.
+On a plusieurs nuages de points et on voit une tendance qui ressortent par lecture graphique. A partir du figure
+\ref{fig:projection-pop-12-13}, on observe que la dimension 1 semble être assez représentative de la popularité d'une chanson:
+violet quand les coordonnées sont diminués sur la dimension 1 et autre couleurs quand elles augmentent.
 
 \hypertarget{etude-des-variables}{%
 \subsection{Etude des variables}\label{etude-des-variables}}
